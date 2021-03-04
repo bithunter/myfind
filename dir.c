@@ -9,6 +9,10 @@
 #include <dirent.h>
 #include "defs.h"
 
+/**
+ * @brief list a directory
+ * 
+ */
 void do_dir(const char *dir_name) {
     DIR *directory = opendir(dir_name);
 
