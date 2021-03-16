@@ -10,6 +10,15 @@
 #include <sys/stat.h>
 #include <limits.h>
 
+#define MYFIND_USER 1
+#define MYFIND_NAME 2
+#define MYFIND_TYPE 4
+#define MYFIND_PRINT 8
+#define MYFIND_LS 16
+#define MYFIND_MAXDEPTH 32
+#define MYFIND_HELP 64
+#define MYFIND_ISFILE 128		// already filename-input before -name ?
+
 /**
  * @struct myfind
  * @brief holds the result of the parser, link-options, all filenames and the valid predicates for filename-actions
@@ -20,6 +29,7 @@ struct myfind {
 	int predicate;						// options (Bit 0 = user, 1 = name, 2 = type, 3 = print, 4 = ls)
 	struct fileinfo *fileinfo;			// names of files, directory or link
 	struct mypredicate *mypred;			// arguments to describe the file and search-mode (after path)
+	int maxdepth;						// how deep do we search the directory-tree?
 	char path[PATH_MAX];				// path to working directory
 };
 /**
@@ -51,13 +61,22 @@ struct fileinfo {
 struct mypredicate {
 	int predicate;		// type of predicate user = 1, name = 2, type = 4, print = 8, ls = 16
 	struct mypredicate *next;
-	char *argument;		// argument without quotes
+	struct arguments *args;		// argument without quotes
 };
+struct arguments {
+	char *argument;
+	struct arguments *next;
+};
+
 int find_end_of_link_opt(struct myfind *, int , char **);
 int test_expression(const char *);
 int parse_arguments(struct myfind *, int, char **, int);
-int get_filenames(struct myfind *, int, int, char **, int, int);
+int get_filenames(struct myfind *, char *, int, char **, int, int);
 void freeMemory(struct myfind *);
-void do_dir(const char *);
+int do_dir(struct myfind *, char *, int, int);
+int do_entry(struct myfind *);
+char *glob_pattern(char *);
+void printHelp();
+int doesitmatch(struct myfind *, char *, int);
 
 #endif /* DEFS_H_ */
