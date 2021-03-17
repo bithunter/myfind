@@ -73,10 +73,12 @@ int test_expression(const char *);
 int parse_arguments(struct myfind *, int, char **, int);
 int get_filenames(struct myfind *, char *, int, char **, int, int);
 void freeMemory(struct myfind *);
-int do_dir(struct myfind *, char *, int, int);
+int do_dir(struct myfind *, char *, int, int, short);
 int do_entry(struct myfind *);
 char *glob_pattern(char *);
 void printHelp();
 int doesitmatch(struct myfind *, char *, int);
+int checkType(struct myfind *, int);
+int print_lstat(struct stat *, char *);
 
 #endif /* DEFS_H_ */

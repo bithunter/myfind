@@ -18,16 +18,8 @@
 int doesitmatch(struct myfind *task, char *name, int type){
 	struct mypredicate *mypred = task->mypred;
 	struct arguments *arg;
-	int found = 0;
-	while(mypred != NULL){
-		if(type & mypred->predicate){
-			found = 1;
-			break;
-		}
-		mypred = mypred->next;
-	}
-	if(!found) return 0;
 
+	if(!checkType(task, type)) return -1;
 	arg = mypred->args;
 	while(arg != NULL){
 		if(!fnmatch(name, arg->argument, FNM_NOESCAPE | FNM_PERIOD)){
@@ -35,7 +27,22 @@ int doesitmatch(struct myfind *task, char *name, int type){
 		}
 		arg = arg->next;
 	}
-	return 0;
+	return 0;						// no match
+}
+/**
+ *  @brief 
+ * 
+ */
+int checkType(struct myfind *task, int type){
+	struct mypredicate *mypred = task->mypred;
+
+	while(mypred != NULL){
+		if(type & mypred->predicate){
+			return type;
+		}
+		mypred = mypred->next;
+	}
+	return 0;			// argument was not entered by user(-name, -user, ...)
 }
 /**
  * @fn int find_end_of_link_opt(int, char*[])
