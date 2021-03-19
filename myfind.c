@@ -42,12 +42,6 @@ int main(int argc, char *argv[]) {
 			{ 0 }
 	};
 
-#if _DEBUG
-	puts("***** DEBUG - MODE ON ***************************\n");
-	printf("\nWorking directory: %s\n",getcwd(tasktodo.path, PATH_MAX));
-	for(temp=0;temp<argc;temp++) printf("Argument %d: %s\n",temp, argv[temp]);
-	puts("\n");
-#endif
 	end_of_link_opt = find_end_of_link_opt(&tasktodo, argc, argv);												// get index of first possible filename
 	if((end_of_filenames = parse_arguments(&tasktodo, argc, argv, end_of_link_opt)) == 0) return EXIT_FAILURE;	// get arg after list of filenames
 	if(end_of_link_opt != end_of_filenames) default_dir = 0;													// is 0 when user entered at least one filename
@@ -57,13 +51,8 @@ int main(int argc, char *argv[]) {
 	} else {
 		working_dir = argv[end_of_link_opt];
 	}
-#if _DEBUG
-	printf("Position after filenames: %d\n",end_of_filenames);
-	printf("end of leading options = %d\n\n", end_of_link_opt);
-	printf("working_dir = %s\n",working_dir);
-#endif
 
-	glob_pattern("test-fi*");
+	//glob_pattern("test-fi*");
 
 	temp = get_filenames(&tasktodo, start_dir, argc, argv, end_of_link_opt, end_of_filenames);
 	if(temp == 0) {
@@ -78,13 +67,7 @@ int main(int argc, char *argv[]) {
 		return 0;																					// filename already set, no double filename (in -name) allowed
 	}
 
-#if _DEBUG
-	puts("*************************************************\n");
-#endif
-
 	if(!do_entry(&tasktodo)) puts("Error building tree!");
-
-	printf("**************************************************\n");
 
 	freeMemory(&tasktodo);
 	return EXIT_SUCCESS;

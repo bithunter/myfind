@@ -4,6 +4,7 @@
  * @brief necessary definitions to make the hole thing work
  *
  */
+//#pragma once
 #ifndef	_DEFS_H
 #define	_DEFS_H	1
 #define _DEBUG 1
@@ -78,7 +79,6 @@ int do_entry(struct myfind *);
 char *glob_pattern(char *);
 void printHelp();
 int doesitmatch(struct myfind *, char *, int);
-int checkType(struct myfind *, int);
-int print_lstat(struct stat *, char *);
+int print_lstat(struct myfind *, struct stat *, char *);
 
 #endif /* DEFS_H_ */

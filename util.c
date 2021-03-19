@@ -19,30 +19,16 @@ int doesitmatch(struct myfind *task, char *name, int type){
 	struct mypredicate *mypred = task->mypred;
 	struct arguments *arg;
 
-	if(!checkType(task, type)) return -1;
-	arg = mypred->args;
-	while(arg != NULL){
-		if(!fnmatch(name, arg->argument, FNM_NOESCAPE | FNM_PERIOD)){
-			return type;
-		}
-		arg = arg->next;
-	}
-	return 0;						// no match
-}
-/**
- *  @brief 
- * 
- */
-int checkType(struct myfind *task, int type){
-	struct mypredicate *mypred = task->mypred;
-
 	while(mypred != NULL){
-		if(type & mypred->predicate){
-			return type;
+		arg = mypred->args;
+		if(mypred->predicate == type){
+			if(!fnmatch(arg->argument, name, FNM_NOESCAPE | FNM_PERIOD)){
+				return type;
+			}
 		}
 		mypred = mypred->next;
 	}
-	return 0;			// argument was not entered by user(-name, -user, ...)
+	return 0;						// no match
 }
 /**
  * @fn int find_end_of_link_opt(int, char*[])
@@ -62,26 +48,20 @@ int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
 		  if (0 == strcmp("-H", argv[i]))
 		{
 			task->linkoption = 'H';
-#if _DEBUG
-			  printf("-H\n");
-#endif
+
 		  /* Meaning: dereference symbolic links on command line, but nowhere else. */
 		  //set_follow_state(SYMLINK_DEREF_ARGSONLY);
 		}
 		  else if (0 == strcmp("-L", argv[i]))
 		{
 			  task->linkoption = 'L';
-#if _DEBUG
-			  printf("-L\n");
-#endif
+
 		  /* Meaning: dereference all symbolic links. */
 		  //set_follow_state(SYMLINK_ALWAYS_DEREF);
 		}else if (0 == strcmp("-P", argv[i]))
 		{
 			  task->linkoption = 'P';
-#if _DEBUG
-			  printf("-P\n");
-#endif
+
 		  /* Meaning: dereference all symbolic links. */
 		  //set_follow_state(SYMLINK_ALWAYS_DEREF);
 		}else if (0 == strcmp("--", argv[i]))
@@ -133,14 +113,14 @@ int test_expression(const char *arg)
  * @return index of first argument after filename(s)
  */
 int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link_opt) {
-	int i, y, end_of_filenames, found, arg_counter;
+	int i, y, end_of_filenames, found;
 	struct mypredicate *mypred, *mypredinfo;
 	struct arguments *myargs, *myargsinfo;
 
 	struct options const myoptions[] =
 	{
-			{"-user", MYFIND_USER, 2},
-			{"-name", MYFIND_NAME, 2},
+			{"-user", MYFIND_USER, 1},
+			{"-name", MYFIND_NAME, 1},
 			{"-type", MYFIND_TYPE, 1},
 			{"-print", MYFIND_PRINT, 1},
 			{"-ls", MYFIND_LS, 0},
@@ -157,6 +137,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 		if (!test_expression(argv[i]))											// is there still a filename where it shouldn't be? (-name & -user can have more parameters)
 		{
 		  printf("myfind: paths must precede expression: `%s'\n", argv[i]);		// is yes, show error message and quit
+		  if(mypred->predicate & MYFIND_NAME) printf("myfind: possible unquoted pattern after predicate `-name'?\n");	// -name argument without quotes?
 		  return 0;
 		}
 		else {
@@ -168,13 +149,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 			while(strcmp(myoptions[y].optname,"END") != 0)
 			{
 				if(strcmp(myoptions[y].optname,argv[i]) == 0) {						// compare expression with list of possible arguments
-#if _DEBUG
-					printf("Table[%d] -> %s",y, myoptions[y].optname);
-#endif
 					if(task->predicate & myoptions[y].opt_mode){
-#if _DEBUG
-						puts(" Duplikat!\n");
-#endif
 						return 0;													// option already set, no duplicate allowed
 					}
 					task->predicate = task->predicate | myoptions[y].opt_mode;							// set option-bit of a valid argument
@@ -209,12 +184,9 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						break;
 					case MYFIND_MAXDEPTH:
 						mypred->predicate = MYFIND_MAXDEPTH;
-						task->maxdepth = (atoi(argv[i+1]) < 0 ? 0 : atoi(argv[i+1]));
+						if(i<(argc-1))task->maxdepth = (atoi(argv[i+1]) < 0 ? 0 : atoi(argv[i+1]));		// something comming after '-maxdepth' ?
 						break;
 					default:
-#if _DEBUG
-						puts("\n");
-#endif
 						printf("myfind: unknown predicate `%s'\n",argv[i]);
 						return 0;
 					}
@@ -227,13 +199,8 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 					mypredinfo->next = NULL;						// currently is this the last one in the list
 					if(myoptions[y].mode > 0){						// mode > 0 requires additional information (type, depth...)
 
-						i++; arg_counter = 0;
-						while(!test_expression(argv[i])){
-							arg_counter++;
-							if((myoptions[y].mode == 1) && (arg_counter > 1)){
-								printf("myfind: too many arguments to `%s'\n",argv[i-2]);
-								return 0;
-							}
+						i++;
+						if(!test_expression(argv[i])){
 							myargs = malloc(sizeof(struct arguments));	// memory space for the argument
 							if(!myargs){
 								puts("myfind: out of memory\n");
@@ -242,30 +209,15 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 							}
 							myargs->argument = argv[i];				// save pointer to the argument
 							myargs->next = NULL;
-							if(mypred->args == NULL) {				// is this the first argument in the list?
-								mypred->args = myargs;
-							} else {
-								myargsinfo->next = myargs;			// if arguments already exists, the new one is the successor of the last in the list
-							}
-#if _DEBUG
-					printf(", %s",argv[i]);
-#endif
-							myargsinfo = myargs;
-							myargsinfo->next = NULL;
+							mypred->args = myargs;
 							i++;
 							if(i >= argc) break;
 						}
-#if _DEBUG
-						puts("\n");
-#endif
 						break;
 					} else {
 						mypred->args = NULL;				// if mode == 0, no additional argument
 						i++;
 					}
-#if _DEBUG
-						puts("\n");
-#endif
 					break;
 				}
 				y++;
@@ -323,12 +275,12 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 			if(file_mem == (struct fileinfo *)0){					// out of memory
 				return 0;
 			}
-#if _DEBUG
+/*
 			if(S_ISREG(file_mem->filestat.st_mode)) printf("%s ist eine reguläre Datei\n",argv[i]);
 			if(S_ISCHR(file_mem->filestat.st_mode)) printf("%s ist eine Gerätedatei\n",argv[i]);
 			if(S_ISDIR(file_mem->filestat.st_mode)) printf("%s ist ein Verzeichnis\n",argv[i]);
 			if(S_ISLNK(file_mem->filestat.st_mode)) printf("%s ist ein Symbollink\n",argv[i]);
-#endif
+*/
 			if(!S_ISDIR(file_mem->filestat.st_mode)) {
 				task->predicate = task->predicate | MYFIND_ISFILE;	// indicates that user entered a filename instead of a path before "-...." arguments
 			}
@@ -344,9 +296,6 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 		}
 	} else {
 		// no userinput for a path or filename (before the -... options), take standard "." path
-#if _DEBUG
-		printf("Filename: '.'\n");
-#endif
 		file_mem = get_filestat(task, ".");
 		if(file_mem == (struct fileinfo *)-1){		// does file or path exist?
 			return -1;
@@ -357,12 +306,6 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 		task->fileinfo = file_mem;			// has to be the first entry in the list
 		file_mem->next = NULL;
 		file_mem->name = start_dir;
-#if _DEBUG
-			if(S_ISREG(file_mem->filestat.st_mode)) printf("%s ist eine reguläre Datei\n",".");
-			if(S_ISCHR(file_mem->filestat.st_mode)) printf("%s ist eine Gerätedatei\n",".");
-			if(S_ISDIR(file_mem->filestat.st_mode)) printf("%s ist ein Verzeichnis\n", file_mem->name);
-			if(S_ISLNK(file_mem->filestat.st_mode)) printf("%s ist ein Symbollink\n",".");
-#endif
 	}
 	return 1;
 }
