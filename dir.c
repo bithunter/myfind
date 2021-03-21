@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 #include <glob.h>
@@ -28,11 +29,11 @@ int do_entry(struct myfind *task){
 }
 
 int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
-const char *rwx = "rwxrwxrwx";
-char l_rwx[11], linkbuf[PATH_MAX];
-int i;
-struct passwd *pw;
-struct group *grp;
+	const char *rwx = "rwxrwxrwx";
+	char l_rwx[11], linkbuf[PATH_MAX];
+	int i;
+	struct passwd *pw;
+	struct group *grp;
 
 	int bits[]= {
 	 S_IRUSR,S_IWUSR,S_IXUSR,// Zugriffsrechte User
@@ -77,6 +78,9 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 	char fname[PATH_MAX];
 	struct dirent *dirzeiger;
 	struct stat attribut;
+	struct mypredicate *pred = task->mypred;
+	int ls, indx;
+	char *optn[] = {"-name", "-user", "-type"};
 
 	depth++;						// increase position in dir hierarchy
 
@@ -86,23 +90,59 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 	return 0;
 	}
 	// Das komplette Verzeichnis auslesen
+	ls = 0;
 	while((dirzeiger=readdir(dir)) != NULL) {
 		if(strcmp("..", dirzeiger->d_name) && strcmp(".", dirzeiger->d_name) &&(doesitmatch(task, dirzeiger->d_name, MYFIND_NAME))) {
-			if(flag){
-				if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
-				flag = 0;
-			}
-			memset(&fname[0], 0, PATH_MAX);
-			strcpy(&fname[0],dir_name);
-			strcat(&fname[0], "/");
-			strcat(&fname[0], dirzeiger->d_name);
 
-			if(!print_lstat(task, &attribut, &fname[0])) return 0;
 
-			if(S_ISDIR(attribut.st_mode)) {
-				if(depth < maxdepth || maxdepth == 0) {
-					do_dir(task, &fname[0], maxdepth, depth, 0);
+
+			while(pred != NULL && !ls){
+				switch(pred->predicate){
+					case MYFIND_USER:
+						if(task->user != NULL) return 0;
+						task->user = pred->args->argument;
+						break;
+					case MYFIND_TYPE:
+						if(task->type != NULL) return 0;
+						task->type = pred->args->argument;
+						break;
+					case MYFIND_NAME:
+						if(task->name != NULL) return 0;
+						task->name = pred->args->argument;
+						break;
+					case MYFIND_LS:
+						ls = 1;
+						break;
+					case MYFIND_MAXDEPTH:
+						maxdepth = atoi(pred->args->argument);				// give warning, if mxdepth isn't on first position
+						if(task->name) indx = 0; else if(task->user) indx = 1; else if(task->type) indx = 2;
+						if(task->user || task->type || task->name) {
+							printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
+						}
+						break;
+					default:
+						return 0;		// unknown type
+						break;
 				}
+				if(ls){
+					if(flag){
+					if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
+					flag = 0;
+					}
+					memset(&fname[0], 0, PATH_MAX);
+					strcpy(&fname[0],dir_name);
+					strcat(&fname[0], "/");
+					strcat(&fname[0], dirzeiger->d_name);
+
+					if(!print_lstat(task, &attribut, &fname[0])) return 0;
+
+					if(S_ISDIR(attribut.st_mode)) {
+						if(depth < maxdepth || maxdepth == 0) {
+							do_dir(task, &fname[0], maxdepth, depth, 0);
+						}
+					}
+				}
+				pred = pred->next;
 			}
 		}
 	}
