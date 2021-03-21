@@ -80,7 +80,7 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 
 	depth++;						// increase position in dir hierarchy
 
-	// Arbeitsverzeichnis öffnen
+	// open directory
 	if((dir=opendir(dir_name)) == NULL) {
 		printf("myfind: ‘%s’: Permission denied\n",dir_name);
 	return 0;
