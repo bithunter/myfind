@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
 			NULL,
 			NULL,
 			0,				// 0 = search hole directory
+			NULL, NULL, NULL,
 			{ 0 }
 	};
 

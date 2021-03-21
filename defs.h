@@ -31,6 +31,9 @@ struct myfind {
 	struct fileinfo *fileinfo;			// names of files, directory or link
 	struct mypredicate *mypred;			// arguments to describe the file and search-mode (after path)
 	int maxdepth;						// how deep do we search the directory-tree?
+	char *name;
+	char *type;
+	char *user;
 	char path[PATH_MAX];				// path to working directory
 };
 /**
