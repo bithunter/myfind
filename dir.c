@@ -89,7 +89,7 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 		printf("myfind: ‘%s’: Permission denied\n",dir_name);
 	return 0;
 	}
-	// Das komplette Verzeichnis auslesen
+	// read the directory
 	ls = 0;
 	while((dirzeiger=readdir(dir)) != NULL) {
 		if(strcmp("..", dirzeiger->d_name) && strcmp(".", dirzeiger->d_name) &&(doesitmatch(task, dirzeiger->d_name, MYFIND_NAME))) {
