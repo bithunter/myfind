@@ -1,0 +1,74 @@
+\hypertarget{util_8c}{}\doxysection{util.\+c File Reference}
+\label{util_8c}\index{util.c@{util.c}}
+
+
+Linux File-\/\+Search.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$dirent.\+h$>$}\newline
+{\ttfamily \#include $<$fnmatch.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}defs.\+h\char`\"{}}\newline
+Include dependency graph for util.\+c\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{util_8c_ab28b55a2c4127adfc1732d631c19050b}\label{util_8c_ab28b55a2c4127adfc1732d631c19050b}} 
+int {\bfseries doesitmatch} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$name, int type)
+\item 
+\mbox{\Hypertarget{util_8c_aeb660348b43be4ec3114364a682230ef}\label{util_8c_aeb660348b43be4ec3114364a682230ef}} 
+int {\bfseries find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\item 
+int \mbox{\hyperlink{util_8c_abfdd8c51e38ab4e1127093efea2afb55}{test\+\_\+expression}} (const char $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Test if an command line argument is a valid option. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}\label{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}} 
+int {\bfseries parse\+\_\+arguments} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt)
+\item 
+\mbox{\Hypertarget{util_8c_ae4a29c2248daba71492726a7e713d2c9}\label{util_8c_ae4a29c2248daba71492726a7e713d2c9}} 
+struct \mbox{\hyperlink{structfileinfo}{fileinfo}} $\ast$ {\bfseries get\+\_\+filestat} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$name)
+\item 
+\mbox{\Hypertarget{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}\label{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}} 
+int {\bfseries get\+\_\+filenames} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$start\+\_\+dir, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt, int end\+\_\+of\+\_\+filenames)
+\item 
+\mbox{\Hypertarget{util_8c_aec9d1baf81d470e2898cfed1980c692a}\label{util_8c_aec9d1baf81d470e2898cfed1980c692a}} 
+void {\bfseries free\+Memory} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task)
+\item 
+\mbox{\Hypertarget{util_8c_a0d20b69b0ad703df78459e1033d5c1d4}\label{util_8c_a0d20b69b0ad703df78459e1033d5c1d4}} 
+void {\bfseries print\+Help} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Linux File-\/\+Search. 
+
+\begin{DoxyAuthor}{Author}
+Andreas Bauer, I\+C20\+B005 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{util_8c_abfdd8c51e38ab4e1127093efea2afb55}\label{util_8c_abfdd8c51e38ab4e1127093efea2afb55}} 
+\index{util.c@{util.c}!test\_expression@{test\_expression}}
+\index{test\_expression@{test\_expression}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{test\_expression()}{test\_expression()}}
+{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{arg }\end{DoxyParamCaption})}
+
+
+
+Test if an command line argument is a valid option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & Argument to be tested, if it\textquotesingle{}s an option \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}

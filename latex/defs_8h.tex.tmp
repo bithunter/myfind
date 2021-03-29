@@ -1,0 +1,116 @@
+\hypertarget{defs_8h}{}\doxysection{defs.\+h File Reference}
+\label{defs_8h}\index{defs.h@{defs.h}}
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+Include dependency graph for defs.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmyfind}{myfind}}
+\begin{DoxyCompactList}\small\item\em holds the result of the parser, link-\/options, all filenames and the valid predicates for filename-\/actions \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structoptions}{options}}
+\begin{DoxyCompactList}\small\item\em List of the known predicates. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structfileinfo}{fileinfo}}
+\item 
+struct \mbox{\hyperlink{structmypredicate}{mypredicate}}
+\item 
+struct \mbox{\hyperlink{structarguments}{arguments}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{defs_8h_a152fc5203b90b1cff03b7b78579b8f52}\label{defs_8h_a152fc5203b90b1cff03b7b78579b8f52}} 
+\#define {\bfseries \+\_\+\+D\+E\+B\+UG}~1
+\item 
+\mbox{\Hypertarget{defs_8h_af74ac95c0aa6d9ac734896b2ff752ad3}\label{defs_8h_af74ac95c0aa6d9ac734896b2ff752ad3}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+U\+S\+ER}~1
+\item 
+\mbox{\Hypertarget{defs_8h_a569ef62ecf90ffba828fdf78527ed38c}\label{defs_8h_a569ef62ecf90ffba828fdf78527ed38c}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+N\+A\+ME}~2
+\item 
+\mbox{\Hypertarget{defs_8h_a2fe61f7685a890d18b081594465c3ec1}\label{defs_8h_a2fe61f7685a890d18b081594465c3ec1}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+T\+Y\+PE}~4
+\item 
+\mbox{\Hypertarget{defs_8h_a8cc57f8332e830f7d54c77925805eec4}\label{defs_8h_a8cc57f8332e830f7d54c77925805eec4}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+P\+R\+I\+NT}~8
+\item 
+\mbox{\Hypertarget{defs_8h_ad9aeee3407036a60270ec530b534dcb3}\label{defs_8h_ad9aeee3407036a60270ec530b534dcb3}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+LS}~16
+\item 
+\mbox{\Hypertarget{defs_8h_a04633924883fb84e3d004ce17949fe13}\label{defs_8h_a04633924883fb84e3d004ce17949fe13}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+M\+A\+X\+D\+E\+P\+TH}~32
+\item 
+\mbox{\Hypertarget{defs_8h_a65d568ec37ba661274759e89c41e5d29}\label{defs_8h_a65d568ec37ba661274759e89c41e5d29}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+H\+E\+LP}~64
+\item 
+\mbox{\Hypertarget{defs_8h_a2f303d0df37d922e8d8815f673e896c7}\label{defs_8h_a2f303d0df37d922e8d8815f673e896c7}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+I\+S\+F\+I\+LE}~128
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{defs_8h_a9e82e6c02011b42b217ee0f0a2bf541e}\label{defs_8h_a9e82e6c02011b42b217ee0f0a2bf541e}} 
+int {\bfseries find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, int, char $\ast$$\ast$)
+\item 
+int \mbox{\hyperlink{defs_8h_ae81e20369bf41647588739ecdfcd85ec}{test\+\_\+expression}} (const char $\ast$)
+\begin{DoxyCompactList}\small\item\em Test if an command line argument is a valid option. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{defs_8h_a0895ca5b17a1bde43ee1d799533e0b7e}\label{defs_8h_a0895ca5b17a1bde43ee1d799533e0b7e}} 
+int {\bfseries parse\+\_\+arguments} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, int, char $\ast$$\ast$, int)
+\item 
+\mbox{\Hypertarget{defs_8h_a3b40b356b9de75019124a574e14aad51}\label{defs_8h_a3b40b356b9de75019124a574e14aad51}} 
+int {\bfseries get\+\_\+filenames} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int, char $\ast$$\ast$, int, int)
+\item 
+\mbox{\Hypertarget{defs_8h_a7e22557000a9f4d1a40697625de2797d}\label{defs_8h_a7e22557000a9f4d1a40697625de2797d}} 
+void {\bfseries free\+Memory} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
+\item 
+int \mbox{\hyperlink{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}{do\+\_\+dir}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int, int, short)
+\begin{DoxyCompactList}\small\item\em list a directory \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{defs_8h_a2e10c524fd7524721b51922166fe178e}\label{defs_8h_a2e10c524fd7524721b51922166fe178e}} 
+int {\bfseries do\+\_\+entry} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
+\item 
+\mbox{\Hypertarget{defs_8h_ac8561088e788ae9804078e08b4f09ea1}\label{defs_8h_ac8561088e788ae9804078e08b4f09ea1}} 
+char $\ast$ {\bfseries glob\+\_\+pattern} (char $\ast$)
+\item 
+\mbox{\Hypertarget{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}\label{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}} 
+void {\bfseries print\+Help} ()
+\item 
+\mbox{\Hypertarget{defs_8h_a6fc704917db8bf1d991dbdfdfdf3b147}\label{defs_8h_a6fc704917db8bf1d991dbdfdfdf3b147}} 
+int {\bfseries doesitmatch} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int)
+\item 
+\mbox{\Hypertarget{defs_8h_aa248e00eace7de749c3a0679ee8e5294}\label{defs_8h_aa248e00eace7de749c3a0679ee8e5294}} 
+int {\bfseries print\+\_\+lstat} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, struct stat $\ast$, char $\ast$)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}\label{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}} 
+\index{defs.h@{defs.h}!do\_dir@{do\_dir}}
+\index{do\_dir@{do\_dir}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{do\_dir()}{do\_dir()}}
+{\footnotesize\ttfamily int do\+\_\+dir (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{dir\+\_\+name,  }\item[{int}]{maxdepth,  }\item[{int}]{depth,  }\item[{short}]{flag }\end{DoxyParamCaption})}
+
+
+
+list a directory 
+
+\mbox{\Hypertarget{defs_8h_ae81e20369bf41647588739ecdfcd85ec}\label{defs_8h_ae81e20369bf41647588739ecdfcd85ec}} 
+\index{defs.h@{defs.h}!test\_expression@{test\_expression}}
+\index{test\_expression@{test\_expression}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{test\_expression()}{test\_expression()}}
+{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+
+
+
+Test if an command line argument is a valid option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & Argument to be tested, if it\textquotesingle{}s an option \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
