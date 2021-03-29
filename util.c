@@ -17,12 +17,12 @@
 
 int doesitmatch(struct myfind *task, char *name, int type){
 	struct mypredicate *mypred = task->mypred;
-	struct arguments *arg;
+	char *arg;
 
 	while(mypred != NULL){
-		arg = mypred->args;
+		arg = mypred->argument;
 		if(mypred->predicate == type){
-			if(!fnmatch(arg->argument, name, FNM_NOESCAPE | FNM_PERIOD)){
+			if(!fnmatch(arg, name, FNM_NOESCAPE | FNM_PERIOD)){
 				return type;
 			}
 		}
@@ -113,9 +113,9 @@ int test_expression(const char *arg)
  * @return index of first argument after filename(s)
  */
 int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link_opt) {
-	int i, y, end_of_filenames, found;
+	int i, y, end_of_filenames, found, indx = 0;
+	char *optn[] = {"NULL", "-name", "-user", "-type"};
 	struct mypredicate *mypred, *mypredinfo;
-	struct arguments *myargs, *myargsinfo;
 
 	struct options const myoptions[] =
 	{
@@ -165,16 +165,19 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						freeMemory(task);
 						return 0;
 					}
-					mypred->args = NULL;
+					mypred->argument = NULL;
 					switch (myoptions[y].opt_mode){									// set type
 					case MYFIND_USER:
 						mypred->predicate = MYFIND_USER;
+						indx = 2;
 						break;
 					case MYFIND_NAME:
 						mypred->predicate = MYFIND_NAME;
+						indx = 1;
 						break;
 					case MYFIND_TYPE:
 						mypred->predicate = MYFIND_TYPE;
+						indx = 3;
 						break;
 					case MYFIND_PRINT:
 						mypred->predicate = MYFIND_PRINT;
@@ -184,7 +187,6 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						break;
 					case MYFIND_MAXDEPTH:
 						mypred->predicate = MYFIND_MAXDEPTH;
-						if(i<(argc-1))task->maxdepth = (atoi(argv[i+1]) < 0 ? 0 : atoi(argv[i+1]));		// something comming after '-maxdepth' ?
 						break;
 					default:
 						printf("myfind: unknown predicate `%s'\n",argv[i]);
@@ -201,23 +203,43 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 
 						i++;
 						if(!test_expression(argv[i])){
-							myargs = malloc(sizeof(struct arguments));	// memory space for the argument
-							if(!myargs){
-								puts("myfind: out of memory\n");
-								freeMemory(task);
-								return 0;
-							}
-							myargs->argument = argv[i];				// save pointer to the argument
-							myargs->next = NULL;
-							mypred->args = myargs;
-							i++;
-							if(i >= argc) break;
+							mypredinfo->argument = argv[i];				// save pointer to the argument
+
+						switch(mypredinfo->predicate){
+							case MYFIND_USER:
+								if(task->user != NULL) break;
+								task->user = argv[i];
+								break;
+							case MYFIND_TYPE:
+								if(task->type != NULL) break;
+								task->type = argv[i];
+								break;
+							case MYFIND_NAME:
+								if(task->name != NULL) break;
+								task->name = argv[i];
+								break;
+							case MYFIND_LS:
+								task->ls++;
+								break;
+							case MYFIND_MAXDEPTH:
+								task->maxdepth = atoi(argv[i]);				// give warning, if mxdepth isn't on first position
+								if(task->user || task->type || task->name) {
+									printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
+								}
+								break;
+							default:
+								return 0;		// unknown type
+								break;
 						}
-						break;
+
+						} else {
+							printf("myfind: missing argument to `%s'\n",argv[i-1]);
+							return 0;
+						}
 					} else {
-						mypred->args = NULL;				// if mode == 0, no additional argument
-						i++;
+						mypredinfo->argument = NULL;				// if mode == 0, no additional argument
 					}
+					i++;
 					break;
 				}
 				y++;
@@ -319,12 +341,6 @@ void freeMemory(struct myfind *task){
 		fileinfo = temp;
 	}
 	while(mypredicate != NULL){
-		myarg = mypredicate->args;
-		while(myarg != NULL){
-			temp2 = myarg->next;
-			free(myarg);
-			myarg = temp2;
-		}
 		temp1 = mypredicate->next;
 		free(mypredicate);
 		mypredicate = temp1;
