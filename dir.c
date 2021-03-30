@@ -22,7 +22,7 @@
 int do_entry(struct myfind *task){
 	struct fileinfo *f_info = task->fileinfo;
 	while(f_info != NULL){
-		do_dir(task, f_info->name, task->maxdepth, 0, 1);
+		do_dir(task, f_info->name, 0, 1);
 		f_info = f_info->next;
 	}
 	return 1;
@@ -42,6 +42,7 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	};
 	l_rwx[0] = '-';
 	l_rwx[10] = '\0';
+	printf("lstst->name: %s\n",fname);
 	if((lstat(fname, attribut)) == -1) {
 		printf("Fehler bei stat (%s)\n", fname);
 		return 0;
@@ -73,9 +74,10 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
  * @brief list a directory
  * 
  */
-int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short flag) {
+int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	DIR *dir;
 	char fname[PATH_MAX];
+	int maxdepth = task->maxdepth;
 	struct dirent *dirzeiger;
 	struct stat attribut;
 	struct mypredicate *pred = task->mypred;
@@ -88,30 +90,30 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 	return 0;
 	}
 	// read the directory
+	printf("Read->flag: %d, dir_name: %s\n",flag, dir_name);
 	while((dirzeiger=readdir(dir)) != NULL) {
 		if(strcmp("..", dirzeiger->d_name) && strcmp(".", dirzeiger->d_name) &&(doesitmatch(task, dirzeiger->d_name, MYFIND_NAME))) {
 
-
-			if(task->ls){
-				if(flag){
+			if(flag){
+				printf("flag: %d, dir_name: %s\n",flag, dir_name);
 				if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
 				flag = 0;
-				}
-				memset(&fname[0], 0, PATH_MAX);
-				strcpy(&fname[0],dir_name);
-				strcat(&fname[0], "/");
-				strcat(&fname[0], dirzeiger->d_name);
-				while(task->ls > 0){
-					if(!print_lstat(task, &attribut, &fname[0])) return 0;
-					task->ls--;
-				}
+			}
+			memset(&fname[0], 0, PATH_MAX);
+			strcpy(&fname[0],dir_name);
+			strcat(&fname[0], "/");
+			strcat(&fname[0], dirzeiger->d_name);
+			while(task->ls > 0){
+				if(!print_lstat(task, &attribut, &fname[0])) return 0;
+				task->ls--;
+			}
 
-				if(S_ISDIR(attribut.st_mode)) {
-					if(depth < maxdepth || maxdepth == 0) {
-						do_dir(task, &fname[0], maxdepth, depth, 0);
-					}
+			if(S_ISDIR(attribut.st_mode)) {
+				if(depth < maxdepth || maxdepth == 0) {
+					do_dir(task, &fname[0], depth, 0);
 				}
 			}
+
 		}
 	}
 	closedir(dir);

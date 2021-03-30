@@ -16,6 +16,7 @@
 #include "defs.h"
 
 int doesitmatch(struct myfind *task, char *name, int type){
+	return 1;
 	struct mypredicate *mypred = task->mypred;
 	char *arg;
 
