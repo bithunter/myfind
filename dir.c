@@ -88,12 +88,11 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 	return 0;
 	}
 	// read the directory
-	ls = 0;
 	while((dirzeiger=readdir(dir)) != NULL) {
 		if(strcmp("..", dirzeiger->d_name) && strcmp(".", dirzeiger->d_name) &&(doesitmatch(task, dirzeiger->d_name, MYFIND_NAME))) {
 
 
-			if(ls){
+			if(task->ls){
 				if(flag){
 				if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
 				flag = 0;
@@ -102,9 +101,9 @@ int do_dir(struct myfind *task, char *dir_name, int maxdepth, int depth, short f
 				strcpy(&fname[0],dir_name);
 				strcat(&fname[0], "/");
 				strcat(&fname[0], dirzeiger->d_name);
-				indx = ls;
-				while(indx >0){
+				while(task->ls > 0){
 					if(!print_lstat(task, &attribut, &fname[0])) return 0;
+					task->ls--;
 				}
 
 				if(S_ISDIR(attribut.st_mode)) {
