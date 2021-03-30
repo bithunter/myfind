@@ -42,7 +42,6 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	};
 	l_rwx[0] = '-';
 	l_rwx[10] = '\0';
-	printf("lstst->name: %s\n",fname);
 	if((lstat(fname, attribut)) == -1) {
 		printf("Fehler bei stat (%s)\n", fname);
 		return 0;
@@ -77,7 +76,7 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	DIR *dir;
 	char fname[PATH_MAX];
-	int maxdepth = task->maxdepth;
+	int maxdepth = task->maxdepth, ls;
 	struct dirent *dirzeiger;
 	struct stat attribut;
 	struct mypredicate *pred = task->mypred;
@@ -90,12 +89,10 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	return 0;
 	}
 	// read the directory
-	printf("Read->flag: %d, dir_name: %s\n",flag, dir_name);
 	while((dirzeiger=readdir(dir)) != NULL) {
+		ls = task->ls;
 		if(strcmp("..", dirzeiger->d_name) && strcmp(".", dirzeiger->d_name) &&(doesitmatch(task, dirzeiger->d_name, MYFIND_NAME))) {
-
 			if(flag){
-				printf("flag: %d, dir_name: %s\n",flag, dir_name);
 				if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
 				flag = 0;
 			}
@@ -103,11 +100,10 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 			strcpy(&fname[0],dir_name);
 			strcat(&fname[0], "/");
 			strcat(&fname[0], dirzeiger->d_name);
-			while(task->ls > 0){
+			while(ls > 0){
 				if(!print_lstat(task, &attribut, &fname[0])) return 0;
-				task->ls--;
+				ls--;
 			}
-
 			if(S_ISDIR(attribut.st_mode)) {
 				if(depth < maxdepth || maxdepth == 0) {
 					do_dir(task, &fname[0], depth, 0);
