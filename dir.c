@@ -97,20 +97,20 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 		}
 		if(strcmp("..", dirzeiger->d_name) != 0 || strcmp(".", dirzeiger->d_name) !=0 ) {
 			tt = doesitmatch(task, dirzeiger->d_name, dirzeiger->d_type);
-			if(tt == -1) return 0;
-			else if(tt == 1) {
-				memset(&fname[0], 0, PATH_MAX);
-				strcpy(&fname[0],dir_name);
-				strcat(&fname[0], "/");
-				strcat(&fname[0], dirzeiger->d_name);
+			//if(tt == -1) return 0;
+			memset(&fname[0], 0, PATH_MAX);
+			strcpy(&fname[0],dir_name);
+			strcat(&fname[0], "/");
+			strcat(&fname[0], dirzeiger->d_name);
+			if(tt == 1) {
 				while(ls > 0){
 					if(!print_lstat(task, &attribut, &fname[0])) return 0;
 					ls--;
 				}
-				if(S_ISDIR(attribut.st_mode)) {
-					if(depth < maxdepth || maxdepth == 0) {
-						do_dir(task, &fname[0], depth, 0);
-					}
+			}
+			if(S_ISDIR(attribut.st_mode)) {
+				if(depth < maxdepth || maxdepth == 0) {
+					do_dir(task, &fname[0], depth, 0);
 				}
 			}
 		}
