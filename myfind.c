@@ -31,7 +31,6 @@ int main(int argc, char *argv[]) {
 	char *start_dir = ".";
 
 	//DIR *dir;
-
 	//struct dirent *dirzeiger;
 	static struct myfind tasktodo = {
 			' ',
@@ -65,7 +64,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if((tasktodo.predicate & (MYFIND_ISFILE | MYFIND_NAME)) == (MYFIND_ISFILE | MYFIND_NAME)){
-		puts("myfind: When first argument is a filename, no \"-data\" is allowed!\n");
+		puts("myfind: When first argument is a filename, no \"-name\" is allowed!\n");
 		return 0;																					// filename already set, no double filename (in -name) allowed
 	}
 

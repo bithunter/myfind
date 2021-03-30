@@ -16,20 +16,33 @@
 #include "defs.h"
 
 int doesitmatch(struct myfind *task, char *name, int type){
-	return 1;
 	struct mypredicate *mypred = task->mypred;
-	char *arg;
-
-	while(mypred != NULL){
-		arg = mypred->argument;
-		if(mypred->predicate == type){
-			if(!fnmatch(arg, name, FNM_NOESCAPE | FNM_PERIOD)){
-				return type;
+	char *arg[] ={"d","f"}, *tt;
+ 
+	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;
+	if(task->type){
+		char myType[strlen(task->type) + 1];
+		strcpy(myType, task->type);
+		tt = strtok(myType, ",");
+		while(tt != NULL){
+			switch (type)
+			{
+			case DT_REG:
+				if(strcmp(tt,arg[1]) == 0) return 1;
+				break;
+			case DT_DIR:
+				if(strcmp(tt,arg[0]) == 0) return 1;
+				break;
+			default:
+				return 0;
+				break;
 			}
+			tt = strtok(NULL, ",");
 		}
-		mypred = mypred->next;
+		return 0;
 	}
-	return 0;						// no match
+
+	return 1;						// passed all test successfully
 }
 /**
  * @fn int find_end_of_link_opt(int, char*[])
@@ -114,9 +127,10 @@ int test_expression(const char *arg)
  * @return index of first argument after filename(s)
  */
 int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link_opt) {
-	int i, y, end_of_filenames, found, indx = 0;
-	char *optn[] = {"-name", "-user", "-type"};
+	int i, y, z, end_of_filenames, found, fnd, indx = 0;
+	char *optn[] = {"-name", "-user", "-type", "-ls", "-print"};
 	struct mypredicate *mypred, *mypredinfo;
+	char *arg[] ={"d","f","END"}, *tt;
 
 	struct options const myoptions[] =
 	{
@@ -151,11 +165,8 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 			{
 				if(strcmp(myoptions[y].optname,argv[i]) == 0) {						// compare expression with list of possible arguments
 					if((task->predicate & myoptions[y].opt_mode) && !(myoptions[y].opt_mode & (MYFIND_LS|MYFIND_MAXDEPTH))){
-						printf("logic: %d\n",(task->predicate & myoptions[y].opt_mode) && !(myoptions[y].opt_mode & (MYFIND_LS|MYFIND_MAXDEPTH)));
-						puts("Doppelt!");
 						return 0;													// option already set, no duplicate allowed
 					}
-					printf("logic: %d\n",(task->predicate & myoptions[y].opt_mode) && !(myoptions[y].opt_mode & (MYFIND_LS|MYFIND_MAXDEPTH)));
 					task->predicate = task->predicate | myoptions[y].opt_mode;							// set option-bit of a valid argument
 					found = 1;																			// indicate, that we found a valid one
 					if((myoptions[y].mode > 0) && ((i == (argc - 1)) || (argv[i+1][0] == '-'))) {		// mode > 0 indicates that an additional argument is required
@@ -185,10 +196,12 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						break;
 					case MYFIND_PRINT:
 						mypred->predicate = MYFIND_PRINT;
+						indx = 4;
 						break;
 					case MYFIND_LS:
 						mypred->predicate = MYFIND_LS;
 						task->ls++;
+						indx = 3;
 						break;
 					case MYFIND_MAXDEPTH:
 						mypred->predicate = MYFIND_MAXDEPTH;
@@ -209,30 +222,52 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						i++;
 						if(!test_expression(argv[i])){
 							mypredinfo->argument = argv[i];				// save pointer to the argument
-
-						switch(mypredinfo->predicate){
-							case MYFIND_USER:
-								if(task->user != NULL) break;
-								task->user = argv[i];
-								break;
-							case MYFIND_TYPE:
-								if(task->type != NULL) break;
+							if(mypredinfo->predicate == MYFIND_TYPE) { 
+								char myType[strlen(argv[i]) + 1];
+								if(task->type != NULL) { puts("Break"); break; }
 								task->type = argv[i];
-								break;
-							case MYFIND_NAME:
-								if(task->name != NULL) break;
-								task->name = argv[i];
-								break;
-							case MYFIND_MAXDEPTH:
-								task->maxdepth = atoi(argv[i]);				// give warning, if mxdepth isn't on first position
-								if(task->user || task->type || task->name) {
-									printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
+								// check the syntax
+								strcpy(myType, argv[i]);
+								tt = strtok(myType, ",");
+								while(tt != NULL){
+									z = 0; fnd = 0;
+									if(strlen(tt) !=1){
+										puts("myfind: Must separate multiple arguments to -type using: ','");
+										return -1;
+									}
+									while(arg[z] != "END"){
+										if(!strcmp(tt,arg[z])) { fnd = 1; break; }		// is it a valid file-type?
+										z++;
+									}
+									if(!fnd){
+										printf("myfind: Unknown argument to -type: %s\n",tt);
+										return 0;
+									}
+									tt = strtok(NULL, ",");
 								}
-								break;
-							default:
-								return 0;		// unknown type
-								break;
-						}
+							}
+
+							switch(mypredinfo->predicate){
+								case MYFIND_USER:
+									if(task->user != NULL) break;
+									task->user = argv[i];
+									break;
+								case MYFIND_TYPE:
+									break;
+								case MYFIND_NAME:
+									if(task->name != NULL) break;
+									task->name = argv[i];
+									break;
+								case MYFIND_MAXDEPTH:
+									task->maxdepth = atoi(argv[i]);				// give warning, if mxdepth isn't on first position
+									if(task->user || task->type || task->name || task->ls) {
+										printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
+									}
+									break;
+								default:
+									return 0;		// unknown type
+									break;
+							}
 
 						} else {
 							printf("myfind: missing argument to `%s'\n",argv[i-1]);
@@ -252,8 +287,6 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 			return 0;
 		}
 	}
-	printf("end_of_filenames = %d, ls = %d\n",end_of_filenames,task->ls);
-	printf("name: %s, type: %s, user: %s, maxdepth, %d\n", task->name, task->type, task->user, task->maxdepth);
 	return end_of_filenames;
 }
 struct fileinfo *get_filestat(struct myfind *task, char *name){
