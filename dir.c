@@ -42,10 +42,10 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	};
 	l_rwx[0] = '-';
 	l_rwx[10] = '\0';
-	if((lstat(fname, attribut)) == -1) {
+	/*if((lstat(fname, attribut)) == -1) {
 		printf("Fehler bei stat (%s)\n", fname);
 		return 0;
-	}
+	}*/
 	if(task->predicate & MYFIND_LS){						// option "-ls" for output?
 		pw = getpwuid(attribut->st_uid);
 		grp = getgrgid(attribut->st_gid);
@@ -80,7 +80,6 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	struct dirent *dirzeiger;
 	struct stat attribut;
 	struct mypredicate *pred = task->mypred;
-
 	depth++;						// increase position in dir hierarchy
 
 	// open directory
@@ -90,21 +89,31 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	}
 	// read the directory
 	while((dirzeiger=readdir(dir)) != NULL) {
-		ls = (task->ls > 0 ? task->ls : 1);
 		if(flag){
+			if((lstat(dir_name, &attribut)) == -1) {
+				printf("Fehler bei stat (%s)\n", fname);
+				closedir(dir);
+				return 0;
+			}
 			if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
 			flag = 0;
 		}
-		if(strcmp("..", dirzeiger->d_name) != 0 || strcmp(".", dirzeiger->d_name) !=0 ) {
+		if(strcmp("..", dirzeiger->d_name) != 0 && strcmp(".", dirzeiger->d_name) !=0 ) {
 			tt = doesitmatch(task, dirzeiger->d_name, dirzeiger->d_type);
+			ls = (task->ls > 0 ? task->ls : 1);
 			//if(tt == -1) return 0;
 			memset(&fname[0], 0, PATH_MAX);
 			strcpy(&fname[0],dir_name);
 			strcat(&fname[0], "/");
 			strcat(&fname[0], dirzeiger->d_name);
+			if((lstat(&fname[0], &attribut)) == -1) {
+				printf("Fehler bei stat (%s)\n", fname);
+				closedir(dir);
+				return 0;
+			}
 			if(tt == 1) {
 				while(ls > 0){
-					if(!print_lstat(task, &attribut, &fname[0])) return 0;
+					if(!print_lstat(task, &attribut, &fname[0])) { closedir(dir); return 0; }
 					ls--;
 				}
 			}
