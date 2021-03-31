@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
+#include <time.h>
 #include "defs.h"
 
 /**
@@ -30,8 +31,10 @@ int do_entry(struct myfind *task){
 
 int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	const char *rwx = "rwxrwxrwx";
-	char l_rwx[11], linkbuf[PATH_MAX];
+	struct stat attr;
+	char l_rwx[11], linkbuf[PATH_MAX], makeTime[15];
 	int i;
+	struct tm *tt;
 	struct passwd *pw;
 	struct group *grp;
 
@@ -42,10 +45,9 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	};
 	l_rwx[0] = '-';
 	l_rwx[10] = '\0';
-	/*if((lstat(fname, attribut)) == -1) {
-		printf("Fehler bei stat (%s)\n", fname);
-		return 0;
-	}*/
+
+	memcpy(&attr, attribut, sizeof(struct stat));
+
 	if(task->predicate & MYFIND_LS){						// option "-ls" for output?
 		pw = getpwuid(attribut->st_uid);
 		grp = getgrgid(attribut->st_gid);
@@ -57,14 +59,17 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 			l_rwx[i+1]=(attribut->st_mode & bits[i]) ? rwx[i] : '-';
 		}
 		l_rwx[10]='\0';
-		printf("%9lu%7lu%11s%4lu %10s %10s %-40s", attribut->st_ino, attribut->st_blocks/2, l_rwx, attribut->st_nlink, pw->pw_name, grp->gr_name, fname);
+		tt = localtime(&attr.st_mtime);
+		strftime(makeTime, 15, "%b %d %H:%M" ,tt);
+	
+		printf("%9lu%7lu%11s%4lu%9s%9s%9lu%13s %s", attribut->st_ino, attribut->st_blocks/2, l_rwx, attribut->st_nlink, pw->pw_name, grp->gr_name, attribut->st_size, makeTime, fname);
 	} else {
 		printf("%-40s ", fname);
 	}
 	if( S_ISLNK(attribut->st_mode) ) {
 		readlink(fname, linkbuf, PATH_MAX);
 		linkbuf[attribut->st_size] = '\0';
-		printf(" %s", linkbuf);
+		printf(" -> %s", linkbuf);
 	}
 	puts(" ");
 	return 1;
@@ -76,7 +81,7 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	DIR *dir;
 	char fname[PATH_MAX];
-	int maxdepth = task->maxdepth, ls, tt;
+	int maxdepth = task->maxdepth, ls, tt, mstat;
 	struct dirent *dirzeiger;
 	struct stat attribut;
 	struct mypredicate *pred = task->mypred;
@@ -90,7 +95,7 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 	// read the directory
 	while((dirzeiger=readdir(dir)) != NULL) {
 		if(flag){
-			if((lstat(dir_name, &attribut)) == -1) {
+			if((stat(dir_name, &attribut)) == -1) {
 				printf("Fehler bei stat (%s)\n", fname);
 				closedir(dir);
 				return 0;
@@ -106,7 +111,8 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 			strcpy(&fname[0],dir_name);
 			strcat(&fname[0], "/");
 			strcat(&fname[0], dirzeiger->d_name);
-			if((lstat(&fname[0], &attribut)) == -1) {
+			if(task->linkoption == 'L') mstat = lstat(fname, &attribut); else mstat = stat(fname, &attribut);
+			if(mstat == -1) {
 				printf("Fehler bei stat (%s)\n", fname);
 				closedir(dir);
 				return 0;
