@@ -39,9 +39,9 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	struct group *grp;
 
 	int bits[]= {
-	 S_IRUSR,S_IWUSR,S_IXUSR,// Zugriffsrechte User
-	 S_IRGRP,S_IWGRP,S_IXGRP,// Zugriffsrechte Gruppe
-	 S_IROTH,S_IWOTH,S_IXOTH // Zugriffsrechte der Rest
+	 S_IRUSR,S_IWUSR,S_IXUSR,		// Zugriffsrechte User
+	 S_IRGRP,S_IWGRP,S_IXGRP,		// Zugriffsrechte Gruppe
+	 S_IROTH,S_IWOTH,S_IXOTH 		// Zugriffsrechte der Rest
 	};
 	l_rwx[0] = '-';
 	l_rwx[10] = '\0';
@@ -111,7 +111,7 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 			strcpy(&fname[0],dir_name);
 			strcat(&fname[0], "/");
 			strcat(&fname[0], dirzeiger->d_name);
-			if(task->linkoption == 'L') mstat = lstat(fname, &attribut); else mstat = stat(fname, &attribut);
+			if(task->linkoption == 'L') mstat = stat(fname, &attribut); else mstat = lstat(fname, &attribut);
 			if(mstat == -1) {
 				printf("Fehler bei stat (%s)\n", fname);
 				closedir(dir);
