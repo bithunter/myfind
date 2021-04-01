@@ -19,6 +19,7 @@
 #define MYFIND_MAXDEPTH 1 << 5
 #define MYFIND_HELP 1 << 6
 #define MYFIND_ISFILE 1 << 7		// already filename-input before -name ?
+#define MYFIND_MTIME 1 << 8
 
 /**
  * @struct myfind
@@ -35,6 +36,7 @@ struct myfind {
 	char *name;
 	char *type;
 	char *user;
+	char *mtime;
 	char path[PATH_MAX];				// path to working directory
 };
 /**
@@ -45,7 +47,7 @@ struct myfind {
 struct options {
 	char *optname;	/*!< name of a valid option */
 	int opt_mode;	/*!< indicator of option */
-	int mode;		// 1 = additional argument must follow
+	int mode;		// 2 = additional argument must follow, '-' allowed, 1 -> '-' not allowed
 };
 
 /**
@@ -71,7 +73,7 @@ struct mypredicate {
 
 
 int find_end_of_link_opt(struct myfind *, int , char **);
-int test_expression(const char *);
+int test_expression(const char *, int);
 int parse_arguments(struct myfind *, int, char **, int);
 int get_filenames(struct myfind *, char *, int, char **, int, int);
 void freeMemory(struct myfind *);

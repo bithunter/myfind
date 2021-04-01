@@ -103,19 +103,27 @@ int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
  * @param arg Argument to be tested, if it's an option
  * @return
  */
-int test_expression(const char *arg)
+int test_expression(const char *arg, int type)
 {
-  switch (arg[0])
-    {
-    case '-':
-      if (arg[1])	// "-foo" is an expression
+	switch (type)
+	{
+		case MYFIND_MTIME:
+		puts("MTIME");
+		return 0;
+		puts("wrong");
+		break;
+	}
+	switch (arg[0])
+	{
+	case '-':
+		if (arg[1])	// "-foo" is an expression
 	return 1;
-      else
+		else
 	return 0;		// Just "-" is a filename
-      break;
-    default:
-      return 0;
-    }
+		break;
+	default:
+		return 0;
+	}
 }
 /**
  * @fn int parse_arguments(int, char*[], int)
@@ -128,28 +136,29 @@ int test_expression(const char *arg)
  */
 int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link_opt) {
 	int i, y, z, end_of_filenames, found, fnd, indx = 0;
-	char *optn[] = {"-name", "-user", "-type", "-ls", "-print"};
+	char *optn[] = {"-name", "-user", "-type", "-ls", "-print", "-mtime"};
 	struct mypredicate *mypred, *mypredinfo;
 	char *arg[] ={"d","f","END"}, *tt;
 
 	struct options const myoptions[] =
 	{
-			{"-user", MYFIND_USER, 1},
-			{"-name", MYFIND_NAME, 1},
-			{"-type", MYFIND_TYPE, 1},
-			{"-print", MYFIND_PRINT, 1},
+			{"-user", MYFIND_USER, 2},
+			{"-name", MYFIND_NAME, 2},
+			{"-type", MYFIND_TYPE, 2},
+			{"-print", MYFIND_PRINT, 0},
 			{"-ls", MYFIND_LS, 0},
-			{"-maxdepth", MYFIND_MAXDEPTH, 1},
+			{"-maxdepth", MYFIND_MAXDEPTH, 2},
+			{"-mtime", MYFIND_MTIME, 1},			// additional info required, 1 means, a '-' is allowed, eg. -mtime -3
 			{"--help", MYFIND_HELP, 0},
 			{"END", 0, 0}
 	};
 
 
-	for (i = end_of_link_opt; i < argc && !test_expression(argv[i]); i++);		// find end of the given filenames
+	for (i = end_of_link_opt; i < argc && !test_expression(argv[i], 0); i++);		// find end of the given filenames
 	end_of_filenames = i;														// mark the end of possible filenames (links, files, folder)
 	while (i < argc )
 	{
-		if (!test_expression(argv[i]))											// is there still a filename where it shouldn't be? (-name & -user can have more parameters)
+		if (!test_expression(argv[i], 0))											// is there still a filename where it shouldn't be? (-name & -user can have more parameters)
 		{
 		  printf("myfind: paths must precede expression: `%s'\n", argv[i]);		// is yes, show error message and quit
 		  if(mypred->predicate & MYFIND_NAME) printf("myfind: possible unquoted pattern after predicate `-name'?\n");	// -name argument without quotes?
@@ -169,7 +178,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 					}
 					task->predicate = task->predicate | myoptions[y].opt_mode;							// set option-bit of a valid argument
 					found = 1;																			// indicate, that we found a valid one
-					if((myoptions[y].mode > 0) && ((i == (argc - 1)) || (argv[i+1][0] == '-'))) {		// mode > 0 indicates that an additional argument is required
+					if((myoptions[y].mode > 0) && ((i == (argc - 1)) || ((argv[i+1][0] == '-') && (myoptions[y].mode > 1)))) {		// mode > 0 indicates that an additional argument is required
 																									// is this the last user-input, or no following argument -> missing argument
 						printf("myfind: missing argument to `%s'\n",argv[i]);
 						return 0;
@@ -206,6 +215,10 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 					case MYFIND_MAXDEPTH:
 						mypred->predicate = MYFIND_MAXDEPTH;
 						break;
+					case MYFIND_MTIME:
+						mypred->predicate = MYFIND_MTIME;
+						indx = 5;
+						break;
 					default:
 						printf("myfind: unknown predicate `%s'\n",argv[i]);
 						return 0;
@@ -220,7 +233,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 					if(myoptions[y].mode > 0){						// mode > 0 requires additional information (type, depth...)
 
 						i++;
-						if(!test_expression(argv[i])){
+						if(!test_expression(argv[i], mypredinfo->predicate) ){
 							mypredinfo->argument = argv[i];				// save pointer to the argument
 							if(mypredinfo->predicate == MYFIND_TYPE) { 
 								char myType[strlen(argv[i]) + 1];
@@ -263,6 +276,10 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 									if(task->user || task->type || task->name || task->ls) {
 										printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
 									}
+									break;
+								case MYFIND_MTIME:
+									if(task->mtime != NULL) break;
+									task->mtime = argv[i];
 									break;
 								default:
 									return 0;		// unknown type
@@ -323,7 +340,6 @@ struct fileinfo *get_filestat(struct myfind *task, char *name){
 int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],int end_of_link_opt, int end_of_filenames){
 	int i = end_of_link_opt;
 	struct fileinfo *file_mem, *fileinfo;
-	//default_dir = default_dir;	// avoid unused
 
 	if(i != end_of_filenames){										// is there at least one path or filename?
 		while((i<end_of_filenames) & (i < argc)){					// get all names
@@ -334,12 +350,6 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 			if(file_mem == (struct fileinfo *)0){					// out of memory
 				return 0;
 			}
-/*
-			if(S_ISREG(file_mem->filestat.st_mode)) printf("%s ist eine reguläre Datei\n",argv[i]);
-			if(S_ISCHR(file_mem->filestat.st_mode)) printf("%s ist eine Gerätedatei\n",argv[i]);
-			if(S_ISDIR(file_mem->filestat.st_mode)) printf("%s ist ein Verzeichnis\n",argv[i]);
-			if(S_ISLNK(file_mem->filestat.st_mode)) printf("%s ist ein Symbollink\n",argv[i]);
-*/
 			if(!S_ISDIR(file_mem->filestat.st_mode)) {
 				task->predicate = task->predicate | MYFIND_ISFILE;	// indicates that user entered a filename instead of a path before "-...." arguments
 			}
