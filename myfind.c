@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	int end_of_link_opt = 0; 		// First arg after any -H/-L etc.
 	int end_of_filenames = 0;
 	int temp, default_dir = 1;		// suppose we use standard dir,unless user gives a new path or file (set default_dir 0)
-	char const *start_dir = ".";
+	char *start_dir = ".";
 
 
 	static struct myfind tasktodo = { };
