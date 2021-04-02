@@ -104,7 +104,6 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 			flag = 0;
 		}
 		if(strcmp("..", dirzeiger->d_name) != 0 && strcmp(".", dirzeiger->d_name) !=0 ) {
-			tt = doesitmatch(task, dirzeiger->d_name, dirzeiger->d_type);
 			ls = (task->ls > 0 ? task->ls : 1);
 			//if(tt == -1) return 0;
 			memset(&fname[0], 0, PATH_MAX);
@@ -117,6 +116,7 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 				closedir(dir);
 				return 0;
 			}
+			tt = doesitmatch(task, dirzeiger, &attribut);
 			if(tt == 1) {
 				while(ls > 0){
 					if(!print_lstat(task, &attribut, &fname[0])) { closedir(dir); return 0; }

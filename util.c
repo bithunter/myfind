@@ -13,13 +13,38 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <fnmatch.h>
+#include <time.h>
 #include "defs.h"
 
-int doesitmatch(struct myfind *task, char *name, int type){
+int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
 	struct mypredicate *mypred = task->mypred;
+	char *name = dr->d_name;
 	char *arg[] ={"d","f"}, *tt;
- 
+	int type = dr->d_type, match = 0;
 	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;
+	if(task->mtime){
+		struct stat attr;
+		int d_days, d_mode = ((task->mtime)[0] == '+' ? 1 : 0);
+		d_mode = ((task->mtime)[0] == '-' ? 2 : d_mode);
+		d_days = abs(atoi(task->mtime));
+		memcpy(&attr, attribut, sizeof(struct stat));
+		struct tm *tt = localtime(&attr.st_mtime);
+		double zt = difftime(time(NULL), mktime(tt))/86400;
+		switch(d_mode) {
+			case 2:
+				if(zt<=d_days) match = 1;		// for -mtime -x  -> match if file not older than: present time - x-days
+				break;
+			case 1:
+				if(zt>=(d_days+1)) match = 1;	// for -mtime +x  -> match if file older than: present time - x+1-days
+				break;
+			case 0:
+				if((zt>=d_days) && (zt<=(d_days+1))) match = 1;	// for -mtime x  -> match if file-make between: present time - x-days + (pt +x +1);
+				break;
+		}
+		if(!match) return 0;
+		//printf("Zeitdiff: %2.4E, logic: %d, arg: %s, Wert(int): %d, Modus: %d ", zt, zt<(double)4, task->mtime, d_days, d_mode);
+		//return 1;
+	}
 	if(task->type){
 		char myType[strlen(task->type) + 1];
 		strcpy(myType, task->type);
@@ -108,10 +133,7 @@ int test_expression(const char *arg, int type)
 	switch (type)
 	{
 		case MYFIND_MTIME:
-		puts("MTIME");
 		return 0;
-		puts("wrong");
-		break;
 	}
 	switch (arg[0])
 	{
@@ -234,7 +256,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 
 						i++;
 						if(!test_expression(argv[i], mypredinfo->predicate) ){
-							mypredinfo->argument = argv[i];				// save pointer to the argument
+							mypredinfo->argument = strdup(argv[i]);				// save pointer to the argument
 							if(mypredinfo->predicate == MYFIND_TYPE) { 
 								char myType[strlen(argv[i]) + 1];
 								if(task->type != NULL) { puts("Break"); break; }
@@ -263,13 +285,13 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 							switch(mypredinfo->predicate){
 								case MYFIND_USER:
 									if(task->user != NULL) break;
-									task->user = argv[i];
+									task->user = strdup(argv[i]);
 									break;
 								case MYFIND_TYPE:
 									break;
 								case MYFIND_NAME:
 									if(task->name != NULL) break;
-									task->name = argv[i];
+									task->name = strdup(argv[i]);
 									break;
 								case MYFIND_MAXDEPTH:
 									task->maxdepth = atoi(argv[i]);				// give warning, if mxdepth isn't on first position
@@ -279,7 +301,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 									break;
 								case MYFIND_MTIME:
 									if(task->mtime != NULL) break;
-									task->mtime = argv[i];
+									task->mtime = strdup(argv[i]);
 									break;
 								default:
 									return 0;		// unknown type
@@ -360,7 +382,7 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 			}
 			fileinfo = file_mem;					// set actual pointer to the new element
 			fileinfo->next = NULL;
-			fileinfo->name = argv[i];
+			fileinfo->name = strdup(argv[i]);
 			i++;
 		}
 	} else {
