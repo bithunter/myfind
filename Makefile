@@ -6,8 +6,8 @@ CC = gcc
 	$(CC) -c $^
 
 
-myfind: myfind.o util.o dir.o glob.o defs.h
-	$(CC) $(CFLAGS) $(LIBS) -o myfind myfind.o util.o dir.o glob.o defs.h
+myfind: myfind.o util.o dir.o defs.h
+	$(CC) $(CFLAGS) $(LIBS) -o myfind myfind.o util.o dir.o defs.h
 
 clean:
 	rm -f myfind *.o

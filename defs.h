@@ -38,7 +38,6 @@ struct myfind {
 	char *type;
 	char *user;
 	char *mtime;
-	char path[PATH_MAX];				// path to working directory
 };
 /**
  * @struct options
@@ -76,7 +75,7 @@ struct mypredicate {
 int find_end_of_link_opt(struct myfind *, int , char **);
 int test_expression(const char *, int);
 int parse_arguments(struct myfind *, int, char **, int);
-int get_filenames(struct myfind *, char *, int, char **, int, int);
+int get_filenames(struct myfind *, char const*, int, char **, int, int);
 void freeMemory(struct myfind *);
 int do_dir(struct myfind *, char *, int, short);
 int do_entry(struct myfind *);
