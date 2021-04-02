@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fnmatch.h>
 #include <dirent.h>
 #include <glob.h>
 #include <limits.h>
@@ -27,6 +28,58 @@ int do_entry(struct myfind *task){
 		f_info = f_info->next;
 	}
 	return 1;
+}
+
+int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
+	struct mypredicate *mypred = task->mypred;
+	char *name = dr->d_name;
+	char *arg[] ={"d","f"}, *tt;
+	int type = dr->d_type, match = 0;
+	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;
+	if(task->mtime){
+		struct stat attr;
+		int d_days, d_mode = ((task->mtime)[0] == '+' ? 1 : 0);
+		d_mode = ((task->mtime)[0] == '-' ? 2 : d_mode);
+		d_days = abs(atoi(task->mtime));
+		memcpy(&attr, attribut, sizeof(struct stat));
+		struct tm *tt = localtime(&attr.st_mtime);
+		double zt = difftime(time(NULL), mktime(tt))/86400;
+		switch(d_mode) {
+			case 2:
+				if(zt<=d_days) match = 1;		// for -mtime -x  -> match if file not older than: present time - x-days
+				break;
+			case 1:
+				if(zt>=(d_days+1)) match = 1;	// for -mtime +x  -> match if file older than: present time - x+1-days
+				break;
+			case 0:
+				if((zt>=d_days) && (zt<=(d_days+1))) match = 1;	// for -mtime x  -> match if file-make between: present time - x-days + (pt +x +1);
+				break;
+		}
+		if(!match) return 0;
+	}
+	if(task->type){
+		char myType[strlen(task->type) + 1];
+		strcpy(myType, task->type);
+		tt = strtok(myType, ",");
+		while(tt != NULL){
+			switch (type)
+			{
+			case DT_REG:
+				if(strcmp(tt,arg[1]) == 0) return 1;
+				break;
+			case DT_DIR:
+				if(strcmp(tt,arg[0]) == 0) return 1;
+				break;
+			default:
+				return 0;
+				break;
+			}
+			tt = strtok(NULL, ",");
+		}
+		return 0;
+	}
+
+	return 1;						// passed all test successfully
 }
 
 int print_lstat(struct myfind *task, struct stat *attribut, char *fname){

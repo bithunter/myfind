@@ -81,7 +81,7 @@ void freeMemory(struct myfind *);
 int do_dir(struct myfind *, char *, int, short);
 int do_entry(struct myfind *);
 char *glob_pattern(char *);
-void printHelp();
+void printHelp(), printVersion();
 int doesitmatch(struct myfind *, struct dirent *, struct stat *);
 int print_lstat(struct myfind *, struct stat *, char *);
 

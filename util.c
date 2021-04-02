@@ -12,63 +12,10 @@
 #include <limits.h>
 #include <unistd.h>
 #include <dirent.h>
-#include <fnmatch.h>
 #include <time.h>
 #include "defs.h"
 
-int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
-	struct mypredicate *mypred = task->mypred;
-	char *name = dr->d_name;
-	char *arg[] ={"d","f"}, *tt;
-	int type = dr->d_type, match = 0;
-	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;
-	if(task->mtime){
-		struct stat attr;
-		int d_days, d_mode = ((task->mtime)[0] == '+' ? 1 : 0);
-		d_mode = ((task->mtime)[0] == '-' ? 2 : d_mode);
-		d_days = abs(atoi(task->mtime));
-		memcpy(&attr, attribut, sizeof(struct stat));
-		struct tm *tt = localtime(&attr.st_mtime);
-		double zt = difftime(time(NULL), mktime(tt))/86400;
-		switch(d_mode) {
-			case 2:
-				if(zt<=d_days) match = 1;		// for -mtime -x  -> match if file not older than: present time - x-days
-				break;
-			case 1:
-				if(zt>=(d_days+1)) match = 1;	// for -mtime +x  -> match if file older than: present time - x+1-days
-				break;
-			case 0:
-				if((zt>=d_days) && (zt<=(d_days+1))) match = 1;	// for -mtime x  -> match if file-make between: present time - x-days + (pt +x +1);
-				break;
-		}
-		if(!match) return 0;
-		//printf("Zeitdiff: %2.4E, logic: %d, arg: %s, Wert(int): %d, Modus: %d ", zt, zt<(double)4, task->mtime, d_days, d_mode);
-		//return 1;
-	}
-	if(task->type){
-		char myType[strlen(task->type) + 1];
-		strcpy(myType, task->type);
-		tt = strtok(myType, ",");
-		while(tt != NULL){
-			switch (type)
-			{
-			case DT_REG:
-				if(strcmp(tt,arg[1]) == 0) return 1;
-				break;
-			case DT_DIR:
-				if(strcmp(tt,arg[0]) == 0) return 1;
-				break;
-			default:
-				return 0;
-				break;
-			}
-			tt = strtok(NULL, ",");
-		}
-		return 0;
-	}
 
-	return 1;						// passed all test successfully
-}
 /**
  * @fn int find_end_of_link_opt(int, char*[])
  * @brief find all the pre-options for symbolic links
@@ -190,6 +137,10 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 			y = 0; found = 0;
 			if(strcmp(argv[i],"--help") == 0) {
 				printHelp();
+				return 0;
+			}
+			if(strcmp(argv[i],"-version") == 0) {
+				printVersion();
 				return 0;
 			}
 			while(strcmp(myoptions[y].optname,"END") != 0)
@@ -416,30 +367,22 @@ void freeMemory(struct myfind *task){
 	}
 }
 void printHelp(){
-	puts("\nUsage: .\\myfind [-H] [-L] [-P] [path...] [expression]\n"
+	puts("Usage: .\\myfind [-H] [-L] [-P] [path...] [expression]\n"
 			"default path is the current directory; default expression is -print\n"
-			"expression may consist of: operators, options, tests, and actions:"
+			"expression may consist of: operators and options:"
 			"operators (decreasing precedence; -and is implicit where no others are given):\n"
 			"( EXPR )   ! EXPR   -not EXPR   EXPR1 -a EXPR2   EXPR1 -and EXPR2\n"
 			"EXPR1 -o EXPR2   EXPR1 -or EXPR2   EXPR1 , EXPR2\n"
-			"positional options (always true): -daystart -follow -regextype\n"
 			"\n"
 			"normal options (always true, specified before other expressions):\n"
-			"-depth --help -maxdepth LEVELS -mindepth LEVELS -mount -noleaf\n"
-			"--version -xdev -ignore_readdir_race -noignore_readdir_race\n"
-			"tests (N can be +N or -N or N): -amin N -anewer FILE -atime N -cmin N\n"
-			"-cnewer FILE -ctime N -empty -false -fstype TYPE -gid N -group NAME\n"
-			"-ilname PATTERN -iname PATTERN -inum N -iwholename PATTERN -iregex PATTERN\n"
-			"-links N -lname PATTERN -mmin N -mtime N -name PATTERN -newer FILE\n"
-			"-nouser -nogroup -path PATTERN -perm [-/]MODE -regex PATTERN\n"
-			"-readable -writable -executable\n"
-			"-wholename PATTERN -size N[bcwkMG] -true -type [bcdpflsD] -uid N\n"
-			"-used N -user NAME -xtype [bcdpfls]      -context CONTEXT\n"
-			"\n"
-			"actions: -delete -print0 -printf FORMAT -fprintf FILE FORMAT -print\n"
-			"-fprint0 FILE -fprint FILE -ls -fls FILE -prune -quit\n"
-			"-exec COMMAND ; -exec COMMAND {} + -ok COMMAND ;\n"
-			"-execdir COMMAND ; -execdir COMMAND {} + -okdir COMMAND ;\n"
+			"---help -maxdepth -mtime N -name PATTERN -user NAME -type TYP\n"
 			"\n"
 			"You can report bugs in the \"myfind\" program via Email <ic20b005@technikum-wien.at>.");
+}
+void printVersion(){
+	puts("myfind (SS2021) 1.0.0\n"
+			"Copyright (C) 2021 Technikum Wien - IC2020\n"
+			"This is free software: you are free to change and redistribute it.\n"
+			"There is NO WARRANTY, to the extent permitted by law.\n"
+			"Written by Andreas Bauer.");
 }
