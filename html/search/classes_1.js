@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['fileinfo_16',['fileinfo',['../structfileinfo.html',1,'']]],
-  ['filename_17',['filename',['../structfilename.html',1,'']]]
+  ['myfind_24',['myfind',['../structmyfind.html',1,'']]],
+  ['mypredicate_25',['mypredicate',['../structmypredicate.html',1,'']]]
 ];

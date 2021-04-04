@@ -73,12 +73,14 @@ $(function() {
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;fnmatch.h&gt;</code><br />
 <code>#include &lt;dirent.h&gt;</code><br />
 <code>#include &lt;glob.h&gt;</code><br />
 <code>#include &lt;limits.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &lt;pwd.h&gt;</code><br />
 <code>#include &lt;grp.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="defs_8h_source.html">defs.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dir.c:</div>
@@ -89,22 +91,24 @@ Include dependency graph for dir.c:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac17b1f2ebc5f8d934a0a5a6ab6d811d9"><td class="memItemLeft" align="right" valign="top"><a id="ac17b1f2ebc5f8d934a0a5a6ab6d811d9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>do_entry</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task)</td></tr>
+<tr class="memitem:ac17b1f2ebc5f8d934a0a5a6ab6d811d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_8c.html#ac17b1f2ebc5f8d934a0a5a6ab6d811d9">do_entry</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task)</td></tr>
+<tr class="memdesc:ac17b1f2ebc5f8d934a0a5a6ab6d811d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">call all directories, given by the filenames in the myfind-structure  <a href="dir_8c.html#ac17b1f2ebc5f8d934a0a5a6ab6d811d9">More...</a><br /></td></tr>
 <tr class="separator:ac17b1f2ebc5f8d934a0a5a6ab6d811d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a045df4b9dc86fc1af4553b605936f57d"><td class="memItemLeft" align="right" valign="top"><a id="a045df4b9dc86fc1af4553b605936f57d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>print_lstat</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, struct stat *attribut, char *fname)</td></tr>
+<tr class="memitem:a84769c6f9961cb01981aad9497f502e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_8c.html#a84769c6f9961cb01981aad9497f502e0">doesitmatch</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, struct dirent *dr, struct stat *attribut)</td></tr>
+<tr class="memdesc:a84769c6f9961cb01981aad9497f502e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if file fits to the given specifications  <a href="dir_8c.html#a84769c6f9961cb01981aad9497f502e0">More...</a><br /></td></tr>
+<tr class="separator:a84769c6f9961cb01981aad9497f502e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045df4b9dc86fc1af4553b605936f57d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_8c.html#a045df4b9dc86fc1af4553b605936f57d">print_lstat</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, struct stat *attribut, char *fname)</td></tr>
 <tr class="separator:a045df4b9dc86fc1af4553b605936f57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55d6df5ba43cb08852de0fccba53519c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_8c.html#a55d6df5ba43cb08852de0fccba53519c">do_dir</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *dir_name, int maxdepth, int depth, short flag)</td></tr>
-<tr class="memdesc:a55d6df5ba43cb08852de0fccba53519c"><td class="mdescLeft">&#160;</td><td class="mdescRight">list a directory  <a href="dir_8c.html#a55d6df5ba43cb08852de0fccba53519c">More...</a><br /></td></tr>
-<tr class="separator:a55d6df5ba43cb08852de0fccba53519c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6d9dd675944f6e0f3fad493f5f3003"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_8c.html#afa6d9dd675944f6e0f3fad493f5f3003">do_dir</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *dir_name, int depth, short flag)</td></tr>
+<tr class="memdesc:afa6d9dd675944f6e0f3fad493f5f3003"><td class="mdescLeft">&#160;</td><td class="mdescRight">main prcedure to display a single file or a directory (incl. content), files have to match the requirements  <a href="dir_8c.html#afa6d9dd675944f6e0f3fad493f5f3003">More...</a><br /></td></tr>
+<tr class="separator:afa6d9dd675944f6e0f3fad493f5f3003"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>File and directory explorer. </p>
 <dl class="section author"><dt>Author</dt><dd>Andreas Bauer, IC20B005 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a55d6df5ba43cb08852de0fccba53519c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55d6df5ba43cb08852de0fccba53519c">&#9670;&nbsp;</a></span>do_dir()</h2>
+<a id="afa6d9dd675944f6e0f3fad493f5f3003"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa6d9dd675944f6e0f3fad493f5f3003">&#9670;&nbsp;</a></span>do_dir()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,12 +124,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>print_lstat</b> (struc
           <td></td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>dir_name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxdepth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -147,7 +145,132 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>print_lstat</b> (struc
       </table>
 </div><div class="memdoc">
 
-<p>list a directory </p>
+<p>main prcedure to display a single file or a directory (incl. content), files have to match the requirements </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">dir_name</td><td>name of file or directory </td></tr>
+    <tr><td class="paramname">depth</td><td>value of -maxdepth showes how deep we go into a directory </td></tr>
+    <tr><td class="paramname">flag</td><td>indicates if the starting directory should be diplayed or not (avoids a directory to be displayed twice when func is called recursively) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if successful, 0 if a error occured </dd></dl>
+
+</div>
+</div>
+<a id="ac17b1f2ebc5f8d934a0a5a6ab6d811d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac17b1f2ebc5f8d934a0a5a6ab6d811d9">&#9670;&nbsp;</a></span>do_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int do_entry </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>call all directories, given by the filenames in the myfind-structure </p>
+<p>int <a class="el" href="dir_8c.html#ac17b1f2ebc5f8d934a0a5a6ab6d811d9" title="call all directories, given by the filenames in the myfind-structure">do_entry(struct myfind *task)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if operation is successful, 0 otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a84769c6f9961cb01981aad9497f502e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84769c6f9961cb01981aad9497f502e0">&#9670;&nbsp;</a></span>doesitmatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int doesitmatch </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct dirent *&#160;</td>
+          <td class="paramname"><em>dr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct stat *&#160;</td>
+          <td class="paramname"><em>attribut</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>check if file fits to the given specifications </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">dr</td><td>system-dirent struct of the file-information </td></tr>
+    <tr><td class="paramname">attribut</td><td>stat-structure with the fileinformation from the stat() function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if successfully, 0 if file does not meet the requirements </dd></dl>
+
+</div>
+</div>
+<a id="a045df4b9dc86fc1af4553b605936f57d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a045df4b9dc86fc1af4553b605936f57d">&#9670;&nbsp;</a></span>print_lstat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int print_lstat </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct stat *&#160;</td>
+          <td class="paramname"><em>attribut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>fname</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">attribut</td><td>stat-structure with the fileinformation from the stat() function </td></tr>
+    <tr><td class="paramname">fname</td><td>name of the file to display </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if successfull </dd></dl>
 
 </div>
 </div>

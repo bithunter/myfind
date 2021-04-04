@@ -17,7 +17,7 @@
 
 
 /**
- * @fn int find_end_of_link_opt(int, char*[])
+ * @fn int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
  * @brief find all the pre-options for symbolic links
  *
  * @param task	myfind-structure and argument information
@@ -70,7 +70,7 @@ int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
   return end_of_link_opt;
 }
 /**
- * @fn int test_expression(const char*)
+ * @fn int test_expression(const char *arg, int type)
  * @brief Test if an command line argument is a valid option
  *
  * @param arg Argument to be tested, if it's an option
@@ -96,7 +96,7 @@ int test_expression(const char *arg, int type)
 	}
 }
 /**
- * @fn int parse_arguments(int, char*[], int)
+ * @fn int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link_opt)
  * @brief identify index of first argument after filename and get all the following arguments
  *
  * @param argc
@@ -281,7 +281,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 	return end_of_filenames;
 }
 /**
- * @fn struct fileinfo *get_filestat(struct myfind *, char *)
+ * @fn struct fileinfo *get_filestat(struct myfind *task, char *name)
  * @brief 
  *
  * @param task	myfind-structure and argument information
@@ -307,7 +307,7 @@ struct fileinfo *get_filestat(struct myfind *task, char *name){
 	return file_mem;
 }
 /**
- * @fn int get_filenames(struct myfind*, int, int, char*[], int, int)
+ * @fn int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[], int end_of_link_opt, int end_of_filenames)
  * @brief Makes a list of all given paths or filenames
  *
  * @param task	myfind-structure and argument information
@@ -360,7 +360,7 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[], 
 	return 1;
 }
 /**
- * @fn void freeMemory(struct myfind *)
+ * @fn void freeMemory(struct myfind *task)
  * @brief free all the reserved memory
  *
  * @param task	myfind-structure and argument information

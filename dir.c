@@ -18,7 +18,7 @@
 #include "defs.h"
 
 /**
- * @fn int do_entry(struct myfind *)
+ * int do_entry(struct myfind *task)
  * @brief call all directories, given by the filenames in the myfind-structure
  *
  * @param task	myfind-structure and argument information
@@ -33,7 +33,7 @@ int do_entry(struct myfind *task){
 	return 1;
 }
 /**
- * @fn int doesitmatch(struct myfind *, struct dirent *, struct stat *)
+ * @fn int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut)
  * @brief check if file fits to the given specifications
  *
  * @param task		myfind-structure and argument information
@@ -96,7 +96,7 @@ int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
 	return 1;						// passed all test successfully
 }
 /**
- * @fn int print_lstat(struct myfind *, struct stat *, char *)
+ * @fn int print_lstat(struct myfind *task, struct stat *attribut, char *fname)
  * @brief 
  *
  * @param task		myfind-structure and argument information
@@ -150,7 +150,7 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 	return 1;
 }
 /**
- * @fn do_dir(struct myfind *, char *, int, short)
+ * @fn int do_dir(struct myfind *task, char *dir_name, int depth, short flag)
  * @brief main prcedure to display a single file or a directory (incl. content), files have to match the requirements
  *
  * @param task		myfind-structure and argument information

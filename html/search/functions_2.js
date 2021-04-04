@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['test_5fexpression_27',['test_expression',['../defs_8h.html#ae81e20369bf41647588739ecdfcd85ec',1,'test_expression(const char *):&#160;util.c'],['../util_8c.html#abfdd8c51e38ab4e1127093efea2afb55',1,'test_expression(const char *arg):&#160;util.c']]]
+  ['get_5ffilenames_36',['get_filenames',['../util_8c.html#ac7893f659c6e7532ee5bcba579a2a36a',1,'util.c']]],
+  ['get_5ffilestat_37',['get_filestat',['../util_8c.html#a1a5ddff4561e98506fb8032b10ad3b06',1,'util.c']]]
 ];

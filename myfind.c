@@ -15,7 +15,7 @@
 
 
 /**
- * @fn int main(int, char*[])
+ * @fn int main(int argc, char *argv[])
  * @brief Find procedure for files, folders and symbol links
  *
  * @param argc

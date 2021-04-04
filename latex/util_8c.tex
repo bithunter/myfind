@@ -13,36 +13,30 @@ Linux File-\/\+Search.
 {\ttfamily \#include $<$limits.\+h$>$}\newline
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$dirent.\+h$>$}\newline
-{\ttfamily \#include $<$fnmatch.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}defs.\+h\char`\"{}}\newline
 Include dependency graph for util.\+c\+:
 % FIG 0
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{util_8c_ab28b55a2c4127adfc1732d631c19050b}\label{util_8c_ab28b55a2c4127adfc1732d631c19050b}} 
-int {\bfseries doesitmatch} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$name, int type)
-\item 
-\mbox{\Hypertarget{util_8c_aeb660348b43be4ec3114364a682230ef}\label{util_8c_aeb660348b43be4ec3114364a682230ef}} 
-int {\bfseries find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
-\item 
-int \mbox{\hyperlink{util_8c_abfdd8c51e38ab4e1127093efea2afb55}{test\+\_\+expression}} (const char $\ast$arg)
+int \mbox{\hyperlink{util_8c_aeb660348b43be4ec3114364a682230ef}{find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em find all the pre-\/options for symbolic links \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{util_8c_af24f64307ddb0c5a9453cdb68b3702dd}{test\+\_\+expression}} (const char $\ast$arg, int type)
 \begin{DoxyCompactList}\small\item\em Test if an command line argument is a valid option. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}\label{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}} 
-int {\bfseries parse\+\_\+arguments} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt)
+int \mbox{\hyperlink{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}{parse\+\_\+arguments}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt)
+\begin{DoxyCompactList}\small\item\em identify index of first argument after filename and get all the following arguments \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structfileinfo}{fileinfo}} $\ast$ \mbox{\hyperlink{util_8c_a1a5ddff4561e98506fb8032b10ad3b06}{get\+\_\+filestat}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$name)
 \item 
-\mbox{\Hypertarget{util_8c_ae4a29c2248daba71492726a7e713d2c9}\label{util_8c_ae4a29c2248daba71492726a7e713d2c9}} 
-struct \mbox{\hyperlink{structfileinfo}{fileinfo}} $\ast$ {\bfseries get\+\_\+filestat} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$name)
-\item 
-\mbox{\Hypertarget{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}\label{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}} 
-int {\bfseries get\+\_\+filenames} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$start\+\_\+dir, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt, int end\+\_\+of\+\_\+filenames)
-\item 
-\mbox{\Hypertarget{util_8c_aec9d1baf81d470e2898cfed1980c692a}\label{util_8c_aec9d1baf81d470e2898cfed1980c692a}} 
-void {\bfseries free\+Memory} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task)
-\item 
+int \mbox{\hyperlink{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}{get\+\_\+filenames}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$start\+\_\+dir, int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, int end\+\_\+of\+\_\+link\+\_\+opt, int end\+\_\+of\+\_\+filenames)
+\begin{DoxyCompactList}\small\item\em Makes a list of all given paths or filenames. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{util_8c_aec9d1baf81d470e2898cfed1980c692a}{free\+Memory}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task)
+\begin{DoxyCompactList}\small\item\em free all the reserved memory \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{util_8c_a0d20b69b0ad703df78459e1033d5c1d4}\label{util_8c_a0d20b69b0ad703df78459e1033d5c1d4}} 
 void {\bfseries print\+Help} ()
-\end{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{util_8c_a9c4b081f1e1ad60def15811c71a936f2}{print\+Version}} ()
+\begin{DoxyCompactList}\small\item\em print software credentials \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -54,11 +48,133 @@ Andreas Bauer, I\+C20\+B005
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{util_8c_abfdd8c51e38ab4e1127093efea2afb55}\label{util_8c_abfdd8c51e38ab4e1127093efea2afb55}} 
+\mbox{\Hypertarget{util_8c_aeb660348b43be4ec3114364a682230ef}\label{util_8c_aeb660348b43be4ec3114364a682230ef}} 
+\index{util.c@{util.c}!find\_end\_of\_link\_opt@{find\_end\_of\_link\_opt}}
+\index{find\_end\_of\_link\_opt@{find\_end\_of\_link\_opt}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{find\_end\_of\_link\_opt()}{find\_end\_of\_link\_opt()}}
+{\footnotesize\ttfamily int find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+find all the pre-\/options for symbolic links 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em argc} & \\
+\hline
+{\em argv} & arguments from treminal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index-\/number of first filename or predicate 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{myfind_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{util_8c_aec9d1baf81d470e2898cfed1980c692a}\label{util_8c_aec9d1baf81d470e2898cfed1980c692a}} 
+\index{util.c@{util.c}!freeMemory@{freeMemory}}
+\index{freeMemory@{freeMemory}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{freeMemory()}{freeMemory()}}
+{\footnotesize\ttfamily void free\+Memory (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task }\end{DoxyParamCaption})}
+
+
+
+free all the reserved memory 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}\label{util_8c_ac7893f659c6e7532ee5bcba579a2a36a}} 
+\index{util.c@{util.c}!get\_filenames@{get\_filenames}}
+\index{get\_filenames@{get\_filenames}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{get\_filenames()}{get\_filenames()}}
+{\footnotesize\ttfamily int get\+\_\+filenames (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{start\+\_\+dir,  }\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]},  }\item[{int}]{end\+\_\+of\+\_\+link\+\_\+opt,  }\item[{int}]{end\+\_\+of\+\_\+filenames }\end{DoxyParamCaption})}
+
+
+
+Makes a list of all given paths or filenames. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em start\+\_\+dir} & is \textquotesingle{}.\textquotesingle{} at the first call, if not otherwise defined \\
+\hline
+{\em argc} & \\
+\hline
+{\em argv} & \\
+\hline
+{\em end\+\_\+of\+\_\+link\+\_\+opt} & index of first possible filename \\
+\hline
+{\em end\+\_\+of\+\_\+filenames} & end of filenames, index of first possible argument (starts with \textquotesingle{}-\/....\textquotesingle{}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 = error, 1 = success, -\/1 file does not exist 
+\end{DoxyReturn}
+\mbox{\Hypertarget{util_8c_a1a5ddff4561e98506fb8032b10ad3b06}\label{util_8c_a1a5ddff4561e98506fb8032b10ad3b06}} 
+\index{util.c@{util.c}!get\_filestat@{get\_filestat}}
+\index{get\_filestat@{get\_filestat}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{get\_filestat()}{get\_filestat()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structfileinfo}{fileinfo}} $\ast$ get\+\_\+filestat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em name} & name of the file to test \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the new struct if successfully, 0 otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}\label{util_8c_a4d543697c720cd127b1b2d0c5ba92e63}} 
+\index{util.c@{util.c}!parse\_arguments@{parse\_arguments}}
+\index{parse\_arguments@{parse\_arguments}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{parse\_arguments()}{parse\_arguments()}}
+{\footnotesize\ttfamily int parse\+\_\+arguments (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]},  }\item[{int}]{end\+\_\+of\+\_\+link\+\_\+opt }\end{DoxyParamCaption})}
+
+
+
+identify index of first argument after filename and get all the following arguments 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & \\
+\hline
+{\em argv} & \\
+\hline
+{\em end\+\_\+of\+\_\+link\+\_\+opt} & index of first possible filename \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of first argument after filename(s) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{util_8c_a9c4b081f1e1ad60def15811c71a936f2}\label{util_8c_a9c4b081f1e1ad60def15811c71a936f2}} 
+\index{util.c@{util.c}!printVersion@{printVersion}}
+\index{printVersion@{printVersion}!util.c@{util.c}}
+\doxysubsubsection{\texorpdfstring{printVersion()}{printVersion()}}
+{\footnotesize\ttfamily void print\+Version (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+print software credentials 
+
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{util_8c_af24f64307ddb0c5a9453cdb68b3702dd}\label{util_8c_af24f64307ddb0c5a9453cdb68b3702dd}} 
 \index{util.c@{util.c}!test\_expression@{test\_expression}}
 \index{test\_expression@{test\_expression}!util.c@{util.c}}
 \doxysubsubsection{\texorpdfstring{test\_expression()}{test\_expression()}}
-{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{arg }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{arg,  }\item[{int}]{type }\end{DoxyParamCaption})}
 
 
 

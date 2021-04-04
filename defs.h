@@ -51,7 +51,7 @@ struct options {
 };
 
 /**
- * @struct filename
+ * @struct fileinfo
  * @brief detail of a filename (file, directory or link and file-details)
  *
  */
@@ -62,7 +62,7 @@ struct fileinfo {
 };
 /**
  *  @struct mypredicate
- *  @brief 
+ *  @brief  information for a entered argument (value, type)
  * 
  */
 struct mypredicate {

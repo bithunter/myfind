@@ -78,7 +78,7 @@ $(function() {
 <code>#include &lt;limits.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &lt;dirent.h&gt;</code><br />
-<code>#include &lt;fnmatch.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="defs_8h_source.html">defs.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for util.c:</div>
@@ -89,37 +89,282 @@ Include dependency graph for util.c:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab28b55a2c4127adfc1732d631c19050b"><td class="memItemLeft" align="right" valign="top"><a id="ab28b55a2c4127adfc1732d631c19050b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>doesitmatch</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *name, int type)</td></tr>
-<tr class="separator:ab28b55a2c4127adfc1732d631c19050b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb660348b43be4ec3114364a682230ef"><td class="memItemLeft" align="right" valign="top"><a id="aeb660348b43be4ec3114364a682230ef"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>find_end_of_link_opt</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, int argc, char *argv[])</td></tr>
+<tr class="memitem:aeb660348b43be4ec3114364a682230ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#aeb660348b43be4ec3114364a682230ef">find_end_of_link_opt</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, int argc, char *argv[])</td></tr>
+<tr class="memdesc:aeb660348b43be4ec3114364a682230ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">find all the pre-options for symbolic links  <a href="util_8c.html#aeb660348b43be4ec3114364a682230ef">More...</a><br /></td></tr>
 <tr class="separator:aeb660348b43be4ec3114364a682230ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfdd8c51e38ab4e1127093efea2afb55"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#abfdd8c51e38ab4e1127093efea2afb55">test_expression</a> (const char *arg)</td></tr>
-<tr class="memdesc:abfdd8c51e38ab4e1127093efea2afb55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if an command line argument is a valid option.  <a href="util_8c.html#abfdd8c51e38ab4e1127093efea2afb55">More...</a><br /></td></tr>
-<tr class="separator:abfdd8c51e38ab4e1127093efea2afb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d543697c720cd127b1b2d0c5ba92e63"><td class="memItemLeft" align="right" valign="top"><a id="a4d543697c720cd127b1b2d0c5ba92e63"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>parse_arguments</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, int argc, char *argv[], int end_of_link_opt)</td></tr>
+<tr class="memitem:af24f64307ddb0c5a9453cdb68b3702dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#af24f64307ddb0c5a9453cdb68b3702dd">test_expression</a> (const char *arg, int type)</td></tr>
+<tr class="memdesc:af24f64307ddb0c5a9453cdb68b3702dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if an command line argument is a valid option.  <a href="util_8c.html#af24f64307ddb0c5a9453cdb68b3702dd">More...</a><br /></td></tr>
+<tr class="separator:af24f64307ddb0c5a9453cdb68b3702dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d543697c720cd127b1b2d0c5ba92e63"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#a4d543697c720cd127b1b2d0c5ba92e63">parse_arguments</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, int argc, char *argv[], int end_of_link_opt)</td></tr>
+<tr class="memdesc:a4d543697c720cd127b1b2d0c5ba92e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">identify index of first argument after filename and get all the following arguments  <a href="util_8c.html#a4d543697c720cd127b1b2d0c5ba92e63">More...</a><br /></td></tr>
 <tr class="separator:a4d543697c720cd127b1b2d0c5ba92e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4a29c2248daba71492726a7e713d2c9"><td class="memItemLeft" align="right" valign="top"><a id="ae4a29c2248daba71492726a7e713d2c9"></a>
-struct <a class="el" href="structfileinfo.html">fileinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>get_filestat</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *name)</td></tr>
-<tr class="separator:ae4a29c2248daba71492726a7e713d2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7893f659c6e7532ee5bcba579a2a36a"><td class="memItemLeft" align="right" valign="top"><a id="ac7893f659c6e7532ee5bcba579a2a36a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>get_filenames</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *start_dir, int argc, char *argv[], int end_of_link_opt, int end_of_filenames)</td></tr>
+<tr class="memitem:a1a5ddff4561e98506fb8032b10ad3b06"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structfileinfo.html">fileinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#a1a5ddff4561e98506fb8032b10ad3b06">get_filestat</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *name)</td></tr>
+<tr class="separator:a1a5ddff4561e98506fb8032b10ad3b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7893f659c6e7532ee5bcba579a2a36a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#ac7893f659c6e7532ee5bcba579a2a36a">get_filenames</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task, char *start_dir, int argc, char *argv[], int end_of_link_opt, int end_of_filenames)</td></tr>
+<tr class="memdesc:ac7893f659c6e7532ee5bcba579a2a36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a list of all given paths or filenames.  <a href="util_8c.html#ac7893f659c6e7532ee5bcba579a2a36a">More...</a><br /></td></tr>
 <tr class="separator:ac7893f659c6e7532ee5bcba579a2a36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9d1baf81d470e2898cfed1980c692a"><td class="memItemLeft" align="right" valign="top"><a id="aec9d1baf81d470e2898cfed1980c692a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>freeMemory</b> (struct <a class="el" href="structmyfind.html">myfind</a> *task)</td></tr>
+<tr class="memitem:aec9d1baf81d470e2898cfed1980c692a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#aec9d1baf81d470e2898cfed1980c692a">freeMemory</a> (struct <a class="el" href="structmyfind.html">myfind</a> *task)</td></tr>
+<tr class="memdesc:aec9d1baf81d470e2898cfed1980c692a"><td class="mdescLeft">&#160;</td><td class="mdescRight">free all the reserved memory  <a href="util_8c.html#aec9d1baf81d470e2898cfed1980c692a">More...</a><br /></td></tr>
 <tr class="separator:aec9d1baf81d470e2898cfed1980c692a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d20b69b0ad703df78459e1033d5c1d4"><td class="memItemLeft" align="right" valign="top"><a id="a0d20b69b0ad703df78459e1033d5c1d4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>printHelp</b> ()</td></tr>
 <tr class="separator:a0d20b69b0ad703df78459e1033d5c1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c4b081f1e1ad60def15811c71a936f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8c.html#a9c4b081f1e1ad60def15811c71a936f2">printVersion</a> ()</td></tr>
+<tr class="memdesc:a9c4b081f1e1ad60def15811c71a936f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">print software credentials  <a href="util_8c.html#a9c4b081f1e1ad60def15811c71a936f2">More...</a><br /></td></tr>
+<tr class="separator:a9c4b081f1e1ad60def15811c71a936f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Linux File-Search. </p>
 <dl class="section author"><dt>Author</dt><dd>Andreas Bauer, IC20B005 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="abfdd8c51e38ab4e1127093efea2afb55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfdd8c51e38ab4e1127093efea2afb55">&#9670;&nbsp;</a></span>test_expression()</h2>
+<a id="aeb660348b43be4ec3114364a682230ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb660348b43be4ec3114364a682230ef">&#9670;&nbsp;</a></span>find_end_of_link_opt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int find_end_of_link_opt </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>find all the pre-options for symbolic links </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">argc</td><td></td></tr>
+    <tr><td class="paramname">argv</td><td>arguments from treminal </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>index-number of first filename or predicate </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="myfind_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="Find procedure for files, folders and symbol links.">main()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aec9d1baf81d470e2898cfed1980c692a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec9d1baf81d470e2898cfed1980c692a">&#9670;&nbsp;</a></span>freeMemory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void freeMemory </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>free all the reserved memory </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+
+</div>
+</div>
+<a id="ac7893f659c6e7532ee5bcba579a2a36a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7893f659c6e7532ee5bcba579a2a36a">&#9670;&nbsp;</a></span>get_filenames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int get_filenames </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>start_dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end_of_link_opt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end_of_filenames</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Makes a list of all given paths or filenames. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">start_dir</td><td>is '.' at the first call, if not otherwise defined </td></tr>
+    <tr><td class="paramname">argc</td><td></td></tr>
+    <tr><td class="paramname">argv</td><td></td></tr>
+    <tr><td class="paramname">end_of_link_opt</td><td>index of first possible filename </td></tr>
+    <tr><td class="paramname">end_of_filenames</td><td>end of filenames, index of first possible argument (starts with '-....') </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 = error, 1 = success, -1 file does not exist </dd></dl>
+
+</div>
+</div>
+<a id="a1a5ddff4561e98506fb8032b10ad3b06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a5ddff4561e98506fb8032b10ad3b06">&#9670;&nbsp;</a></span>get_filestat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structfileinfo.html">fileinfo</a> * get_filestat </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">task</td><td>myfind-structure and argument information </td></tr>
+    <tr><td class="paramname">name</td><td>name of the file to test </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to the new struct if successfully, 0 otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a4d543697c720cd127b1b2d0c5ba92e63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d543697c720cd127b1b2d0c5ba92e63">&#9670;&nbsp;</a></span>parse_arguments()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int parse_arguments </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structmyfind.html">myfind</a> *&#160;</td>
+          <td class="paramname"><em>task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end_of_link_opt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>identify index of first argument after filename and get all the following arguments </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td></td></tr>
+    <tr><td class="paramname">argv</td><td></td></tr>
+    <tr><td class="paramname">end_of_link_opt</td><td>index of first possible filename </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>index of first argument after filename(s) </dd></dl>
+
+</div>
+</div>
+<a id="a9c4b081f1e1ad60def15811c71a936f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c4b081f1e1ad60def15811c71a936f2">&#9670;&nbsp;</a></span>printVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void printVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>print software credentials </p>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+
+</div>
+</div>
+<a id="af24f64307ddb0c5a9453cdb68b3702dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af24f64307ddb0c5a9453cdb68b3702dd">&#9670;&nbsp;</a></span>test_expression()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,8 +373,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>printHelp</b> ()</td>
           <td class="memname">int test_expression </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

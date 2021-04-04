@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['main_26',['main',['../myfind_8c.html#a0ddf1224851353fc92bfbff6f499fa97',1,'myfind.c']]]
+  ['find_5fend_5fof_5flink_5fopt_34',['find_end_of_link_opt',['../util_8c.html#aeb660348b43be4ec3114364a682230ef',1,'util.c']]],
+  ['freememory_35',['freeMemory',['../defs_8h.html#a7e22557000a9f4d1a40697625de2797d',1,'freeMemory(struct myfind *):&#160;util.c'],['../util_8c.html#aec9d1baf81d470e2898cfed1980c692a',1,'freeMemory(struct myfind *task):&#160;util.c']]]
 ];

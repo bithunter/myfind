@@ -8,26 +8,28 @@ File and directory explorer.
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$fnmatch.\+h$>$}\newline
 {\ttfamily \#include $<$dirent.\+h$>$}\newline
 {\ttfamily \#include $<$glob.\+h$>$}\newline
 {\ttfamily \#include $<$limits.\+h$>$}\newline
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$pwd.\+h$>$}\newline
 {\ttfamily \#include $<$grp.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}defs.\+h\char`\"{}}\newline
 Include dependency graph for dir.\+c\+:
 % FIG 0
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}\label{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}} 
-int {\bfseries do\+\_\+entry} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task)
+int \mbox{\hyperlink{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}{do\+\_\+entry}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task)
+\begin{DoxyCompactList}\small\item\em call all directories, given by the filenames in the myfind-\/structure \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{dir_8c_a84769c6f9961cb01981aad9497f502e0}{doesitmatch}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, struct dirent $\ast$dr, struct stat $\ast$attribut)
+\begin{DoxyCompactList}\small\item\em check if file fits to the given specifications \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{dir_8c_a045df4b9dc86fc1af4553b605936f57d}{print\+\_\+lstat}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, struct stat $\ast$attribut, char $\ast$fname)
 \item 
-\mbox{\Hypertarget{dir_8c_a045df4b9dc86fc1af4553b605936f57d}\label{dir_8c_a045df4b9dc86fc1af4553b605936f57d}} 
-int {\bfseries print\+\_\+lstat} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, struct stat $\ast$attribut, char $\ast$fname)
-\item 
-int \mbox{\hyperlink{dir_8c_a55d6df5ba43cb08852de0fccba53519c}{do\+\_\+dir}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$dir\+\_\+name, int maxdepth, int depth, short flag)
-\begin{DoxyCompactList}\small\item\em list a directory \end{DoxyCompactList}\end{DoxyCompactItemize}
+int \mbox{\hyperlink{dir_8c_afa6d9dd675944f6e0f3fad493f5f3003}{do\+\_\+dir}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$task, char $\ast$dir\+\_\+name, int depth, short flag)
+\begin{DoxyCompactList}\small\item\em main prcedure to display a single file or a directory (incl. content), files have to match the requirements \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -39,13 +41,85 @@ Andreas Bauer, I\+C20\+B005
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{dir_8c_a55d6df5ba43cb08852de0fccba53519c}\label{dir_8c_a55d6df5ba43cb08852de0fccba53519c}} 
+\mbox{\Hypertarget{dir_8c_afa6d9dd675944f6e0f3fad493f5f3003}\label{dir_8c_afa6d9dd675944f6e0f3fad493f5f3003}} 
 \index{dir.c@{dir.c}!do\_dir@{do\_dir}}
 \index{do\_dir@{do\_dir}!dir.c@{dir.c}}
 \doxysubsubsection{\texorpdfstring{do\_dir()}{do\_dir()}}
-{\footnotesize\ttfamily int do\+\_\+dir (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{dir\+\_\+name,  }\item[{int}]{maxdepth,  }\item[{int}]{depth,  }\item[{short}]{flag }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int do\+\_\+dir (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{dir\+\_\+name,  }\item[{int}]{depth,  }\item[{short}]{flag }\end{DoxyParamCaption})}
 
 
 
-list a directory 
+main prcedure to display a single file or a directory (incl. content), files have to match the requirements 
 
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em dir\+\_\+name} & name of file or directory \\
+\hline
+{\em depth} & value of -\/maxdepth showes how deep we go into a directory \\
+\hline
+{\em flag} & indicates if the starting directory should be diplayed or not (avoids a directory to be displayed twice when func is called recursively) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successful, 0 if a error occured 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}\label{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}} 
+\index{dir.c@{dir.c}!do\_entry@{do\_entry}}
+\index{do\_entry@{do\_entry}!dir.c@{dir.c}}
+\doxysubsubsection{\texorpdfstring{do\_entry()}{do\_entry()}}
+{\footnotesize\ttfamily int do\+\_\+entry (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task }\end{DoxyParamCaption})}
+
+
+
+call all directories, given by the filenames in the myfind-\/structure 
+
+int \mbox{\hyperlink{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}{do\+\_\+entry(struct myfind $\ast$task)}} 
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if operation is successful, 0 otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dir_8c_a84769c6f9961cb01981aad9497f502e0}\label{dir_8c_a84769c6f9961cb01981aad9497f502e0}} 
+\index{dir.c@{dir.c}!doesitmatch@{doesitmatch}}
+\index{doesitmatch@{doesitmatch}!dir.c@{dir.c}}
+\doxysubsubsection{\texorpdfstring{doesitmatch()}{doesitmatch()}}
+{\footnotesize\ttfamily int doesitmatch (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{struct dirent $\ast$}]{dr,  }\item[{struct stat $\ast$}]{attribut }\end{DoxyParamCaption})}
+
+
+
+check if file fits to the given specifications 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em dr} & system-\/dirent struct of the file-\/information \\
+\hline
+{\em attribut} & stat-\/structure with the fileinformation from the stat() function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successfully, 0 if file does not meet the requirements 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dir_8c_a045df4b9dc86fc1af4553b605936f57d}\label{dir_8c_a045df4b9dc86fc1af4553b605936f57d}} 
+\index{dir.c@{dir.c}!print\_lstat@{print\_lstat}}
+\index{print\_lstat@{print\_lstat}!dir.c@{dir.c}}
+\doxysubsubsection{\texorpdfstring{print\_lstat()}{print\_lstat()}}
+{\footnotesize\ttfamily int print\+\_\+lstat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{struct stat $\ast$}]{attribut,  }\item[{char $\ast$}]{fname }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em attribut} & stat-\/structure with the fileinformation from the stat() function \\
+\hline
+{\em fname} & name of the file to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successfull 
+\end{DoxyReturn}

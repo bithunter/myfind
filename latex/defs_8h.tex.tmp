@@ -2,6 +2,7 @@
 \label{defs_8h}\index{defs.h@{defs.h}}
 {\ttfamily \#include $<$sys/stat.\+h$>$}\newline
 {\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$dirent.\+h$>$}\newline
 Include dependency graph for defs.\+h\+:
 % FIG 0
 This graph shows which files directly or indirectly include this file\+:
@@ -14,11 +15,9 @@ struct \mbox{\hyperlink{structmyfind}{myfind}}
 struct \mbox{\hyperlink{structoptions}{options}}
 \begin{DoxyCompactList}\small\item\em List of the known predicates. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structfileinfo}{fileinfo}}
-\item 
+\begin{DoxyCompactList}\small\item\em detail of a filename (file, directory or link and file-\/details) \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structmypredicate}{mypredicate}}
-\item 
-struct \mbox{\hyperlink{structarguments}{arguments}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em information for a entered argument (value, type) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -29,25 +28,28 @@ struct \mbox{\hyperlink{structarguments}{arguments}}
 \#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+U\+S\+ER}~1
 \item 
 \mbox{\Hypertarget{defs_8h_a569ef62ecf90ffba828fdf78527ed38c}\label{defs_8h_a569ef62ecf90ffba828fdf78527ed38c}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+N\+A\+ME}~2
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+N\+A\+ME}~1 $<$$<$ 1
 \item 
 \mbox{\Hypertarget{defs_8h_a2fe61f7685a890d18b081594465c3ec1}\label{defs_8h_a2fe61f7685a890d18b081594465c3ec1}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+T\+Y\+PE}~4
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+T\+Y\+PE}~1 $<$$<$ 2
 \item 
 \mbox{\Hypertarget{defs_8h_a8cc57f8332e830f7d54c77925805eec4}\label{defs_8h_a8cc57f8332e830f7d54c77925805eec4}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+P\+R\+I\+NT}~8
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+P\+R\+I\+NT}~1 $<$$<$ 3
 \item 
 \mbox{\Hypertarget{defs_8h_ad9aeee3407036a60270ec530b534dcb3}\label{defs_8h_ad9aeee3407036a60270ec530b534dcb3}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+LS}~16
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+LS}~1 $<$$<$ 4
 \item 
 \mbox{\Hypertarget{defs_8h_a04633924883fb84e3d004ce17949fe13}\label{defs_8h_a04633924883fb84e3d004ce17949fe13}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+M\+A\+X\+D\+E\+P\+TH}~32
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+M\+A\+X\+D\+E\+P\+TH}~1 $<$$<$ 5
 \item 
 \mbox{\Hypertarget{defs_8h_a65d568ec37ba661274759e89c41e5d29}\label{defs_8h_a65d568ec37ba661274759e89c41e5d29}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+H\+E\+LP}~64
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+H\+E\+LP}~1 $<$$<$ 6
 \item 
 \mbox{\Hypertarget{defs_8h_a2f303d0df37d922e8d8815f673e896c7}\label{defs_8h_a2f303d0df37d922e8d8815f673e896c7}} 
-\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+I\+S\+F\+I\+LE}~128
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+I\+S\+F\+I\+LE}~1 $<$$<$ 7
+\item 
+\mbox{\Hypertarget{defs_8h_afe94d0c7ba25c7d3be450c2d19a2cea1}\label{defs_8h_afe94d0c7ba25c7d3be450c2d19a2cea1}} 
+\#define {\bfseries M\+Y\+F\+I\+N\+D\+\_\+\+M\+T\+I\+ME}~1 $<$$<$ 8
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -55,7 +57,7 @@ struct \mbox{\hyperlink{structarguments}{arguments}}
 \mbox{\Hypertarget{defs_8h_a9e82e6c02011b42b217ee0f0a2bf541e}\label{defs_8h_a9e82e6c02011b42b217ee0f0a2bf541e}} 
 int {\bfseries find\+\_\+end\+\_\+of\+\_\+link\+\_\+opt} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, int, char $\ast$$\ast$)
 \item 
-int \mbox{\hyperlink{defs_8h_ae81e20369bf41647588739ecdfcd85ec}{test\+\_\+expression}} (const char $\ast$)
+int \mbox{\hyperlink{defs_8h_accad6ae0945114f06c41d30302978930}{test\+\_\+expression}} (const char $\ast$, int)
 \begin{DoxyCompactList}\small\item\em Test if an command line argument is a valid option. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{defs_8h_a0895ca5b17a1bde43ee1d799533e0b7e}\label{defs_8h_a0895ca5b17a1bde43ee1d799533e0b7e}} 
 int {\bfseries parse\+\_\+arguments} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, int, char $\ast$$\ast$, int)
@@ -63,44 +65,157 @@ int {\bfseries parse\+\_\+arguments} (struct \mbox{\hyperlink{structmyfind}{myfi
 \mbox{\Hypertarget{defs_8h_a3b40b356b9de75019124a574e14aad51}\label{defs_8h_a3b40b356b9de75019124a574e14aad51}} 
 int {\bfseries get\+\_\+filenames} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int, char $\ast$$\ast$, int, int)
 \item 
-\mbox{\Hypertarget{defs_8h_a7e22557000a9f4d1a40697625de2797d}\label{defs_8h_a7e22557000a9f4d1a40697625de2797d}} 
-void {\bfseries free\+Memory} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
-\item 
-int \mbox{\hyperlink{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}{do\+\_\+dir}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int, int, short)
-\begin{DoxyCompactList}\small\item\em list a directory \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{defs_8h_a2e10c524fd7524721b51922166fe178e}\label{defs_8h_a2e10c524fd7524721b51922166fe178e}} 
-int {\bfseries do\+\_\+entry} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
-\item 
+void \mbox{\hyperlink{defs_8h_a7e22557000a9f4d1a40697625de2797d}{free\+Memory}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
+\begin{DoxyCompactList}\small\item\em free all the reserved memory \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{defs_8h_a3eaac7f54b5c7b03a2321c82c972fb90}{do\+\_\+dir}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int, short)
+\begin{DoxyCompactList}\small\item\em main prcedure to display a single file or a directory (incl. content), files have to match the requirements \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{defs_8h_a2e10c524fd7524721b51922166fe178e}{do\+\_\+entry}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$)
+\begin{DoxyCompactList}\small\item\em call all directories, given by the filenames in the myfind-\/structure \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{defs_8h_ac8561088e788ae9804078e08b4f09ea1}\label{defs_8h_ac8561088e788ae9804078e08b4f09ea1}} 
 char $\ast$ {\bfseries glob\+\_\+pattern} (char $\ast$)
 \item 
-\mbox{\Hypertarget{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}\label{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}} 
-void {\bfseries print\+Help} ()
-\item 
-\mbox{\Hypertarget{defs_8h_a6fc704917db8bf1d991dbdfdfdf3b147}\label{defs_8h_a6fc704917db8bf1d991dbdfdfdf3b147}} 
-int {\bfseries doesitmatch} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, char $\ast$, int)
-\item 
-\mbox{\Hypertarget{defs_8h_aa248e00eace7de749c3a0679ee8e5294}\label{defs_8h_aa248e00eace7de749c3a0679ee8e5294}} 
-int {\bfseries print\+\_\+lstat} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, struct stat $\ast$, char $\ast$)
+void \mbox{\hyperlink{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}{print\+Help}} ()
+\begin{DoxyCompactList}\small\item\em Print help-\/text after the \textquotesingle{}--help\textquotesingle{} argument. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{defs_8h_a9c4b081f1e1ad60def15811c71a936f2}{print\+Version}} ()
+\begin{DoxyCompactList}\small\item\em print software credentials \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{defs_8h_a306a019b8e23536268e3005a4de2239e}{doesitmatch}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, struct dirent $\ast$, struct stat $\ast$)
+\begin{DoxyCompactList}\small\item\em check if file fits to the given specifications \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{defs_8h_aa248e00eace7de749c3a0679ee8e5294}{print\+\_\+lstat}} (struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$, struct stat $\ast$, char $\ast$)
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
-\mbox{\Hypertarget{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}\label{defs_8h_ae3d8ab5927751a9dc9efddc9516c3bbe}} 
+\mbox{\Hypertarget{defs_8h_a3eaac7f54b5c7b03a2321c82c972fb90}\label{defs_8h_a3eaac7f54b5c7b03a2321c82c972fb90}} 
 \index{defs.h@{defs.h}!do\_dir@{do\_dir}}
 \index{do\_dir@{do\_dir}!defs.h@{defs.h}}
 \doxysubsubsection{\texorpdfstring{do\_dir()}{do\_dir()}}
-{\footnotesize\ttfamily int do\+\_\+dir (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{dir\+\_\+name,  }\item[{int}]{maxdepth,  }\item[{int}]{depth,  }\item[{short}]{flag }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int do\+\_\+dir (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{char $\ast$}]{dir\+\_\+name,  }\item[{int}]{depth,  }\item[{short}]{flag }\end{DoxyParamCaption})}
 
 
 
-list a directory 
+main prcedure to display a single file or a directory (incl. content), files have to match the requirements 
 
-\mbox{\Hypertarget{defs_8h_ae81e20369bf41647588739ecdfcd85ec}\label{defs_8h_ae81e20369bf41647588739ecdfcd85ec}} 
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em dir\+\_\+name} & name of file or directory \\
+\hline
+{\em depth} & value of -\/maxdepth showes how deep we go into a directory \\
+\hline
+{\em flag} & indicates if the starting directory should be diplayed or not (avoids a directory to be displayed twice when func is called recursively) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successful, 0 if a error occured 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_a2e10c524fd7524721b51922166fe178e}\label{defs_8h_a2e10c524fd7524721b51922166fe178e}} 
+\index{defs.h@{defs.h}!do\_entry@{do\_entry}}
+\index{do\_entry@{do\_entry}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{do\_entry()}{do\_entry()}}
+{\footnotesize\ttfamily int do\+\_\+entry (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task }\end{DoxyParamCaption})}
+
+
+
+call all directories, given by the filenames in the myfind-\/structure 
+
+int \mbox{\hyperlink{dir_8c_ac17b1f2ebc5f8d934a0a5a6ab6d811d9}{do\+\_\+entry(struct myfind $\ast$task)}} 
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if operation is successful, 0 otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_a306a019b8e23536268e3005a4de2239e}\label{defs_8h_a306a019b8e23536268e3005a4de2239e}} 
+\index{defs.h@{defs.h}!doesitmatch@{doesitmatch}}
+\index{doesitmatch@{doesitmatch}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{doesitmatch()}{doesitmatch()}}
+{\footnotesize\ttfamily int doesitmatch (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{struct dirent $\ast$}]{dr,  }\item[{struct stat $\ast$}]{attribut }\end{DoxyParamCaption})}
+
+
+
+check if file fits to the given specifications 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em dr} & system-\/dirent struct of the file-\/information \\
+\hline
+{\em attribut} & stat-\/structure with the fileinformation from the stat() function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successfully, 0 if file does not meet the requirements 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_a7e22557000a9f4d1a40697625de2797d}\label{defs_8h_a7e22557000a9f4d1a40697625de2797d}} 
+\index{defs.h@{defs.h}!freeMemory@{freeMemory}}
+\index{freeMemory@{freeMemory}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{freeMemory()}{freeMemory()}}
+{\footnotesize\ttfamily void free\+Memory (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task }\end{DoxyParamCaption})}
+
+
+
+free all the reserved memory 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_aa248e00eace7de749c3a0679ee8e5294}\label{defs_8h_aa248e00eace7de749c3a0679ee8e5294}} 
+\index{defs.h@{defs.h}!print\_lstat@{print\_lstat}}
+\index{print\_lstat@{print\_lstat}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{print\_lstat()}{print\_lstat()}}
+{\footnotesize\ttfamily int print\+\_\+lstat (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structmyfind}{myfind}} $\ast$}]{task,  }\item[{struct stat $\ast$}]{attribut,  }\item[{char $\ast$}]{fname }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em task} & myfind-\/structure and argument information \\
+\hline
+{\em attribut} & stat-\/structure with the fileinformation from the stat() function \\
+\hline
+{\em fname} & name of the file to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successfull 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}\label{defs_8h_a0d20b69b0ad703df78459e1033d5c1d4}} 
+\index{defs.h@{defs.h}!printHelp@{printHelp}}
+\index{printHelp@{printHelp}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{printHelp()}{printHelp()}}
+{\footnotesize\ttfamily void print\+Help (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Print help-\/text after the \textquotesingle{}--help\textquotesingle{} argument. 
+
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_a9c4b081f1e1ad60def15811c71a936f2}\label{defs_8h_a9c4b081f1e1ad60def15811c71a936f2}} 
+\index{defs.h@{defs.h}!printVersion@{printVersion}}
+\index{printVersion@{printVersion}!defs.h@{defs.h}}
+\doxysubsubsection{\texorpdfstring{printVersion()}{printVersion()}}
+{\footnotesize\ttfamily void print\+Version (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+print software credentials 
+
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{defs_8h_accad6ae0945114f06c41d30302978930}\label{defs_8h_accad6ae0945114f06c41d30302978930}} 
 \index{defs.h@{defs.h}!test\_expression@{test\_expression}}
 \index{test\_expression@{test\_expression}!defs.h@{defs.h}}
 \doxysubsubsection{\texorpdfstring{test\_expression()}{test\_expression()}}
-{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int test\+\_\+expression (\begin{DoxyParamCaption}\item[{const char $\ast$}]{arg,  }\item[{int}]{type }\end{DoxyParamCaption})}
 
 
 
