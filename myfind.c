@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 	}
 
-	if(!do_entry(&tasktodo)) puts("Error building tree!");			// display all entered dir or files
+	if(!do_entry(&tasktodo)) puts("myfind: operation failed!");			// display all entered dir or files
 
 	freeMemory(&tasktodo);					// free all memory we used
 	return EXIT_SUCCESS;					// end successfully

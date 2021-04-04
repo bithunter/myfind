@@ -19,7 +19,7 @@
 #define MYFIND_LS 1 << 4
 #define MYFIND_MAXDEPTH 1 << 5
 #define MYFIND_HELP 1 << 6
-#define MYFIND_ISFILE 1 << 7		// already filename-input before -name ?
+#define MYFIND_ISFILE 1 << 7
 #define MYFIND_MTIME 1 << 8
 
 /**
@@ -28,16 +28,16 @@
  *
  */
 struct myfind {
-	char linkoption;					// may be either L, H or P; last one overrides the others
-	int predicate;						// options (Bit 0 = user, 1 = name, 2 = type, 3 = print, 4 = ls)
-	struct fileinfo *fileinfo;			// names of files, directory or link
-	struct mypredicate *mypred;			// arguments to describe the file and search-mode (after path)
-	int maxdepth;						// how deep do we search the directory-tree?
-	short ls;
-	char *name;
-	char *type;
-	char *user;
-	char *mtime;
+	char linkoption;				// may be either L, H or P; last one overrides the others
+	int predicate;					// options (Bit 0 = user, 1 = name, 2 = type, 3 = print, 4 = ls)
+	struct fileinfo *fileinfo;		// names of files, directory or link
+	struct mypredicate *mypred;		// arguments to describe the file and search-mode (after path)
+	int maxdepth;					// how deep do we search the directory-tree?
+	short ls;				// number of -ls tags
+	char *name;				// -name argument
+	char *type;				// -type of file
+	char *user;				// -user information
+	char *mtime;			// -mtime specificatons
 };
 /**
  * @struct options

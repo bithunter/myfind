@@ -20,9 +20,10 @@
  * @fn int find_end_of_link_opt(int, char*[])
  * @brief find all the pre-options for symbolic links
  *
+ * @param task	myfind-structure and argument information
  * @param argc
- * @param argv
- * @return index of first filename or predicate
+ * @param argv	arguments from treminal
+ * @return		index-number of first filename or predicate
  * @see main()
  */
 int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
@@ -79,7 +80,7 @@ int test_expression(const char *arg, int type)
 {
 	switch (type)
 	{
-		case MYFIND_MTIME:
+		case MYFIND_MTIME:		// '-mtime' allows a following '-'
 		return 0;
 	}
 	switch (arg[0])
@@ -107,7 +108,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 	int i, y, z, end_of_filenames, found, fnd, indx = 0;
 	char *optn[] = {"-name", "-user", "-type", "-ls", "-print", "-mtime"};
 	struct mypredicate *mypred, *mypredinfo;
-	char *arg[] ={"d","f","END"}, *tt;
+	char *arg[] ={"d","f","l","END"}, *tt;
 
 	struct options const myoptions[] =
 	{
@@ -116,18 +117,18 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 			{"-type", MYFIND_TYPE, 2},
 			{"-print", MYFIND_PRINT, 0},
 			{"-ls", MYFIND_LS, 0},
-			{"-maxdepth", MYFIND_MAXDEPTH, 2},
+			{"-maxdepth", MYFIND_MAXDEPTH, 2},		// argument needs one more parameter, no - allowed
 			{"-mtime", MYFIND_MTIME, 1},			// additional info required, 1 means, a '-' is allowed, eg. -mtime -3
 			{"--help", MYFIND_HELP, 0},
 			{"END", 0, 0}
 	};
 
 
-	for (i = end_of_link_opt; i < argc && !test_expression(argv[i], 0); i++);		// find end of the given filenames
+	for (i = end_of_link_opt; i < argc && !test_expression(argv[i], 0); i++);	// find end of the given filenames
 	end_of_filenames = i;														// mark the end of possible filenames (links, files, folder)
 	while (i < argc )
 	{
-		if (!test_expression(argv[i], 0))											// is there still a filename where it shouldn't be? (-name & -user can have more parameters)
+		if (!test_expression(argv[i], 0))										// is there still a filename where it shouldn't be?
 		{
 		  printf("myfind: paths must precede expression: `%s'\n", argv[i]);		// is yes, show error message and quit
 		  if(mypred->predicate & MYFIND_NAME) printf("myfind: possible unquoted pattern after predicate `-name'?\n");	// -name argument without quotes?
@@ -163,7 +164,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 						return 0;
 					}
 					mypred->argument = NULL;
-					switch (myoptions[y].opt_mode){									// set type
+					switch (myoptions[y].opt_mode){									// get type of argument
 					case MYFIND_USER:
 						mypred->predicate = MYFIND_USER;
 						indx = 1;
@@ -210,7 +211,7 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 							mypredinfo->argument = strdup(argv[i]);				// save pointer to the argument
 							if(mypredinfo->predicate == MYFIND_TYPE) { 
 								char myType[strlen(argv[i]) + 1];
-								if(task->type != NULL) { puts("Break"); break; }
+								if(task->type != NULL) break;					// type already set
 								task->type = argv[i];
 								// check the syntax
 								strcpy(myType, argv[i]);
@@ -244,8 +245,8 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 									if(task->name != NULL) break;
 									task->name = strdup(argv[i]);
 									break;
-								case MYFIND_MAXDEPTH:
-									task->maxdepth = atoi(argv[i]);				// give warning, if mxdepth isn't on first position
+								case MYFIND_MAXDEPTH:					// additional 'maxdepth' will overwrite each other and cause a warning
+									task->maxdepth = atoi(argv[i]);		// give warning, if '-maxdepth' isn't on first position
 									if(task->user || task->type || task->name || task->ls) {
 										printf("find: warning: you have specified the -maxdepth option after a non-option argument %s, but options are not positional (-maxdepth affects tests specified before it as well as those specified after it). Please specify options before other arguments.\n",optn[indx]);
 									}
@@ -272,13 +273,21 @@ int parse_arguments(struct myfind *task, int argc, char *argv[], int end_of_link
 				y++;
 			}
 		}
-		if (!found) {															// nothing found? then it's an unknown one
+		if (!found) {												// nothing found? then it's an unknown one
 			printf("myfind: unknown predicate `%s'\n",argv[i]);
 			return 0;
 		}
 	}
 	return end_of_filenames;
 }
+/**
+ * @fn struct fileinfo *get_filestat(struct myfind *, char *)
+ * @brief 
+ *
+ * @param task	myfind-structure and argument information
+ * @param name	name of the file to test
+ * @return pointer to the new struct if successfully, 0 otherwise
+ */
 struct fileinfo *get_filestat(struct myfind *task, char *name){
 	struct fileinfo *file_mem;
 	struct stat details;
@@ -289,7 +298,7 @@ struct fileinfo *get_filestat(struct myfind *task, char *name){
 		return (struct fileinfo *)-1;
 	}
 
-	file_mem = malloc(sizeof(struct fileinfo));
+	file_mem = malloc(sizeof(struct fileinfo));				// get ram for the fileinformation-struct
 	if(!file_mem){
 		freeMemory(task);
 		return (struct fileinfo *)0;
@@ -297,20 +306,19 @@ struct fileinfo *get_filestat(struct myfind *task, char *name){
 	memcpy(file_mem, &details, sizeof(struct stat));		// copy file-information
 	return file_mem;
 }
-
 /**
  * @fn int get_filenames(struct myfind*, int, int, char*[], int, int)
  * @brief Makes a list of all given paths or filenames
  *
- * @param task
- * @param default_dir
+ * @param task	myfind-structure and argument information
+ * @param start_dir is '.' at the first call, if not otherwise defined
  * @param argc
  * @param argv
- * @param end_of_link_opt
- * @param end_of_filenames
- * @return
+ * @param end_of_link_opt	index of first possible filename
+ * @param end_of_filenames	end of filenames, index of first possible argument (starts with '-....')
+ * @return 0 = error, 1 = success, -1 file does not exist
  */
-int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],int end_of_link_opt, int end_of_filenames){
+int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[], int end_of_link_opt, int end_of_filenames){
 	int i = end_of_link_opt;
 	struct fileinfo *file_mem, *fileinfo;
 
@@ -351,11 +359,18 @@ int get_filenames(struct myfind *task, char *start_dir, int argc, char *argv[],i
 	}
 	return 1;
 }
+/**
+ * @fn void freeMemory(struct myfind *)
+ * @brief free all the reserved memory
+ *
+ * @param task	myfind-structure and argument information
+ * @return none
+ */
 void freeMemory(struct myfind *task){
-	struct fileinfo *fileinfo = task->fileinfo, *temp;
+	struct fileinfo *fileinfo = task->fileinfo, *temp;			// get pointer to all structure with reserved memory
 	struct mypredicate *mypredicate = task->mypred, *temp1;
 	struct arguments *myarg, *temp2;
-	while(fileinfo != NULL){
+	while(fileinfo != NULL){									// free the memory
 		temp = fileinfo->next;
 		free(fileinfo);
 		fileinfo = temp;
@@ -366,6 +381,12 @@ void freeMemory(struct myfind *task){
 		mypredicate = temp1;
 	}
 }
+/**
+ * @fn void printHelp()
+ * @brief Print help-text after the '--help' argument
+ *
+ * @return none
+ */
 void printHelp(){
 	puts("Usage: .\\myfind [-H] [-L] [-P] [path...] [expression]\n"
 			"default path is the current directory; default expression is -print\n"
@@ -379,6 +400,12 @@ void printHelp(){
 			"\n"
 			"You can report bugs in the \"myfind\" program via Email <ic20b005@technikum-wien.at>.");
 }
+/**
+ * @fn void printVersion()
+ * @brief print software credentials 
+ *
+ * @return none
+ */
 void printVersion(){
 	puts("myfind (SS2021) 1.0.0\n"
 			"Copyright (C) 2021 Technikum Wien - IC2020\n"
