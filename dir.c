@@ -43,10 +43,12 @@ int do_entry(struct myfind *task){
  */
 int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
 	struct mypredicate *mypred = task->mypred;		// pointer to the list of entered arguments ("-name, -type...")
+	struct passwd *pw = getpwuid(attribut->st_uid);	// for the name of the owner of the file
 	char *name = dr->d_name;						// filename to check
 	char *arg[] ={"d","f","l"}, *tt;				// allowed filetypes
 	int type = dr->d_type, match = 0;
 	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;	// if name doesn't match, don't show the info
+	if(task->user) if(fnmatch(task->user, pw->pw_name, FNM_NOESCAPE | FNM_PERIOD)) return 0;	// check username
 	if(task->mtime){												// -mtime - defined?
 		struct stat attr;
 		int d_days, d_mode = ((task->mtime)[0] == '+' ? 1 : 0);		// check for mode if + or - prefix
@@ -137,7 +139,7 @@ int print_lstat(struct myfind *task, struct stat *attribut, char *fname){
 		tt = localtime(&attr.st_mtime);
 		strftime(makeTime, 15, "%b %d %H:%M" ,tt);			// time of the file last modification
 	
-		printf("%9lu%7lu%11s%4lu%9s%9s%9lu%13s %s", attribut->st_ino, attribut->st_blocks/2, l_rwx, attribut->st_nlink, pw->pw_name, grp->gr_name, attribut->st_size, makeTime, fname);
+		printf("%9lu%7lu%11s%4lu%9s%9s%9lu%13s %s", attribut->st_ino, (attribut->st_blocks)/2, l_rwx, attribut->st_nlink, pw->pw_name, grp->gr_name, attribut->st_size, makeTime, fname);
 	} else {
 		printf("%-40s ", fname);							// without '-ls' just display the filename
 	}
