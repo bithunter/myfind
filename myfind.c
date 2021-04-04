@@ -44,11 +44,6 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 	}
 
-	if((tasktodo.predicate & (MYFIND_ISFILE | MYFIND_NAME)) == (MYFIND_ISFILE | MYFIND_NAME)){		// a filename instead of a dir and '-name' ist not possible
-		puts("myfind: When first argument is a filename, no \"-name\" is allowed!\n");
-		return 0;																					// filename already set, no double filename (in -name) allowed
-	}
-
 	if(!do_entry(&tasktodo)) puts("Error building tree!");			// display all entered dir or files
 
 	freeMemory(&tasktodo);					// free all memory we used
