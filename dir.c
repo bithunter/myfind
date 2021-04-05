@@ -15,6 +15,8 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <regex.h>
+#include <sys/types.h>
 #include "defs.h"
 
 /**
@@ -45,10 +47,30 @@ int doesitmatch(struct myfind *task, struct dirent *dr, struct stat *attribut){
 	struct mypredicate *mypred = task->mypred;		// pointer to the list of entered arguments ("-name, -type...")
 	struct passwd *pw = getpwuid(attribut->st_uid);	// for the name of the owner of the file
 	char *name = dr->d_name;						// filename to check
+	char *username = task->user;
 	char *arg[] ={"d","f","l"}, *tt;				// allowed filetypes
-	int type = dr->d_type, match = 0;
+	int type = dr->d_type, match = 0, rv;
+	regex_t exp;									//the compiled expression
 	if(task->name) if(fnmatch(task->name, name, FNM_NOESCAPE | FNM_PERIOD)) return 0;	// if name doesn't match, don't show the info
-	if(task->user) if(fnmatch(task->user, pw->pw_name, FNM_NOESCAPE | FNM_PERIOD)) return 0;	// check username
+	if(username){						
+		rv = regcomp(&exp, "^[0-9]+$", REG_EXTENDED);	// only numbers allowed
+		if (rv != 0) {
+			puts("myfind: internal error (regex)");		// this error should not happen but just in case...
+			return 0;
+		}
+		if(reg_match(&exp, username)){
+			if(atoi(username) != attribut->st_uid){		// if user entered a valid number, compare the user-id
+				regfree(&exp);
+				return 0;
+			}
+		} else {
+			if(fnmatch(username, pw->pw_name, FNM_NOESCAPE | FNM_PERIOD)){	// compare user-names
+				regfree(&exp);
+				return 0;	// check username
+			}
+		}
+		regfree(&exp);
+	}
 	if(task->mtime){												// -mtime - defined?
 		struct stat attr;
 		int d_days, d_mode = ((task->mtime)[0] == '+' ? 1 : 0);		// check for mode if + or - prefix

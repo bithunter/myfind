@@ -13,9 +13,28 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <time.h>
+#include <regex.h>
 #include "defs.h"
 
-
+/**
+ * @fn void reg_match(regex_t *pexp, char *sz)
+ * @brief	check if a string is also a valid integer
+ * 
+ * @param pexp	regex-expression
+ * @param sz	string to be checked
+ * @return		'1' if string contains only numbers, '0' otherwise
+ */
+int reg_match(regex_t *pexp, char *sz) {
+	regmatch_t matches[MAX_MATCHES]; 					//A list of the matches in the string (a list of 1)
+	//Compare the string to the expression
+	//regexec() returns 0 on match, otherwise REG_NOMATCH
+	if (regexec(pexp, sz, MAX_MATCHES, matches, 0) == 0) {
+		//printf("\"%s\" matches characters %d - %d\n", sz, matches[0].rm_so, matches[0].rm_eo);
+		return 1;
+	} else {
+		return 0;
+	}
+}
 /**
  * @fn int find_end_of_link_opt(struct myfind *task, int argc, char *argv[])
  * @brief find all the pre-options for symbolic links

@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <limits.h>
 #include <dirent.h>
+#include <regex.h>
 
 #define MYFIND_USER 1
 #define MYFIND_NAME 1 << 1
@@ -22,6 +23,7 @@
 #define MYFIND_ISFILE 1 << 7
 #define MYFIND_MTIME 1 << 8
 
+#define MAX_MATCHES 1
 /**
  * @struct myfind
  * @brief holds the result of the parser, link-options, all filenames and the valid predicates for filename-actions
@@ -83,5 +85,6 @@ char *glob_pattern(char *);
 void printHelp(), printVersion();
 int doesitmatch(struct myfind *, struct dirent *, struct stat *);
 int print_lstat(struct myfind *, struct stat *, char *);
+int reg_match(regex_t *, char *);
 
 #endif /* DEFS_H_ */
