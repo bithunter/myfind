@@ -223,7 +223,13 @@ int do_dir(struct myfind *task, char *dir_name, int depth, short flag) {
 					closedir(dir);
 					return 0;
 				}
-				if(!print_lstat(task, &attribut, dir_name)) return 0;			// output info for startdir at the first call
+				struct dirent dr;
+				strcpy(dr.d_name, dir_name);
+				dr.d_type = DT_DIR;												// local dirent-struct with information for func 'doesitmatch'
+				tt = doesitmatch(task, &dr, &attribut);
+				if(tt == 1) {
+					if(!print_lstat(task, &attribut, dir_name)) return 0;		// output info for startdir at the first call is parameter matches
+				}
 				flag = 0;
 			}
 			if(strcmp("..", dirzeiger->d_name) != 0 && strcmp(".", dirzeiger->d_name) !=0 ) {	// don't display '.' and '..' content of a dir
